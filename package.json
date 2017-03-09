@@ -1,0 +1,44 @@
+{
+  "name": "like-ar",
+  "description": "Using objects like arrays with map, filter, forEach and others coming soon.",
+  "version": "0.0.1",
+  "author": "Codenautas <codenautas@googlegroups.com>",
+  "repository": "codenautas/like-ar",
+  "license": "MIT",
+  "main": "like-ar.js",
+  "files": [
+    "like-ar.js"
+  ],
+  "dependencies": {
+  },
+  "devDependencies": {
+    "expect.js": "~0.3.1",
+    "istanbul": "~0.4.5",
+    "mocha": "~3.2.0",
+    
+    "json4all": "~0.3.0"
+  },
+  "engines": {
+    "node": ">= 4.0.0"
+  },
+  "scripts": {
+    "test": "mocha --reporter spec --bail --check-leaks test/",
+    "test-nc": "mocha --reporter spec --bail --check-leaks --no-colors test/",
+    "test-ci": "istanbul cover node_modules/mocha/bin/_mocha --report lcovonly -- --reporter spec --check-leaks test/",
+    "test-cov": "istanbul cover node_modules/mocha/bin/_mocha -- --reporter dot --check-leaks test/",
+    "test-cli": "node server/karma-server.js --karma karma.conf.js --single-run",
+    "test-cli-h": "node server/karma-server.js --karma karma.conf.js",
+    "test-cli-ff": "npm run test-cli -- --browsers Firefox",
+    "test-cli-saf": "npm run test-cli -- --browsers Safari",
+    "start": "node example/server.js",
+    "report": "istanbul report",
+    "all": "npm test && npm run test-cov && npm run report && qa-control . -v"
+  },
+  "qa-control": {
+    "package-version": "0.3.0",
+    "coverage": 90,
+    "run-in": "both",
+    "stability": "extending",
+    "type": "lib"
+  }
+}
