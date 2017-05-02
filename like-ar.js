@@ -46,6 +46,26 @@ likeAr.nonOptimized = function object2Array(o){
     return new ObjectWithArrayMethodsNonOptimized(o);
 };
 
+ObjectWithArrayMethodsOptimized.prototype.keys = function keys(){
+    return Object.keys(this._object);
+};
+
+ObjectWithArrayMethodsOptimized.prototype.values = function values(){
+    if(typeof Object.values === 'function'){
+        return Object.values(arr);
+    }
+    var arr = [];
+    var oThis=this._object;
+    for(var attr in oThis){ if(oThis.hasOwnProperty(attr)){
+        arr.push(oThis[attr]);
+    }}
+    return arr;
+};
+
+ObjectWithArrayMethodsOptimized.prototype.join = function join(separator){
+    return this.values().join(separator);
+};
+
 function ArrayAndKeys2Object(result, keys){ 
     var adapted = {};
     keys.forEach(function(arrayKey, arrayIndex){
@@ -60,14 +80,22 @@ function Argument3Adapt(__,___,x){ return x; }
     {name:'forEach'},
     {name:'map'     , resultAdapt: Argument3Adapt, stepAdapt:function(x, v, n, a){ a[n]=x;        }},
     {name:'filter'  , resultAdapt: Argument3Adapt, stepAdapt:function(x, v, n, a){ if(x){a[n]=v;} }},
+    {name:'join'    , useOptimized: true },
+    {name:'values'  , useOptimized: true },
+    {name:'keys'    , useOptimized: true },
 ].forEach(function(method){
-    ObjectWithArrayMethodsNonOptimized.prototype[method.name] = function (f, fThis){
+    ObjectWithArrayMethodsNonOptimized.prototype[method.name] = method.useOptimized ?
+    ObjectWithArrayMethodsOptimized.prototype[method.name] :
+    function (f, fThis){
         var oThis=this._object;
         var keys=Object.keys(oThis);
         var acumulator=likeAr.nonOptimized();
         var result=keys[method.name](function(arrayKey, arrayIndex){
             var arrayValue=oThis[arrayKey];
-            return (method.stepAdapt||id)(f.call(fThis, arrayValue, arrayKey, oThis), arrayValue, arrayKey, acumulator);
+            return (method.stepAdapt||id)(
+                typeof f === "function" ? f.call(fThis, arrayValue, arrayKey, oThis) : f, 
+                arrayValue, arrayKey, acumulator
+            );
         }, fThis);
         return (method.resultAdapt||id)(result, keys, acumulator);
     };

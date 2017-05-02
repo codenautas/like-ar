@@ -38,6 +38,14 @@ describe("array",function(){
         beforeEach(function(){
             algo={a:'7', b:'8', c:'9'};
         })
+        it("values", function(){
+            var res = likear(algo).values();
+            expect(res).to.eql(['7','8','9']);
+        });
+        it("keys", function(){
+            var res = likear(algo).keys();
+            expect(res).to.eql(['a','b','c']);
+        });
         it("forEach", function(){
             var res=[];
             likear(algo).forEach(function(valor, indice, contenedor){
@@ -80,6 +88,11 @@ describe("array",function(){
             })
             expect(algo).to.eql({a:'7', b:'z', c:'9'})
         });
+        it("join", function(){
+            var res = likear(algo).join('<>');
+            expect(res).to.eql('7<>8<>9');
+            expect(algo).to.eql({a:'7', b:'8', c:'9'});
+        });
         it("chaining map filter map", function(){
             var res = likear(algo)
             .map(function(valor, indice, contenedor){
@@ -98,9 +111,11 @@ describe("array",function(){
             })
             expect(JSON.stringify(res)).to.eql('{"a":"7!?","c":"9!?"}');
             expect(json4all.stringify(res)).to.eql('{"a":"7!?","c":"9!?"}');
-            expect(algo).to.eql({a:'7', b:'8', c:'w'})
+            expect(algo).to.eql({a:'7', b:'8', c:'w'});
+            expect(res.values()).to.eql(['7!?', '9!?']);
+            expect(res.keys()).to.eql(['a', 'c']);
+            expect(res.join()).to.eql('7!?,9!?');
         });
     });
-
   });
 });
