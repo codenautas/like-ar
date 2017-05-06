@@ -50,12 +50,12 @@ ObjectWithArrayMethodsOptimized.prototype.keys = function keys(){
     return Object.keys(this._object);
 };
 
-ObjectWithArrayMethodsOptimized.prototype.values = function values(){
+ObjectWithArrayMethodsOptimized.prototype.array = function array(){
+    var oThis=this._object;
     if(typeof Object.values === 'function'){
-        return Object.values(arr);
+        return Object.values(oThis);
     }
     var arr = [];
-    var oThis=this._object;
     for(var attr in oThis){ if(oThis.hasOwnProperty(attr)){
         arr.push(oThis[attr]);
     }}
@@ -63,7 +63,7 @@ ObjectWithArrayMethodsOptimized.prototype.values = function values(){
 };
 
 ObjectWithArrayMethodsOptimized.prototype.join = function join(separator){
-    return this.values().join(separator);
+    return this.array().join(separator);
 };
 
 function ArrayAndKeys2Object(result, keys){ 
@@ -81,7 +81,7 @@ function Argument3Adapt(__,___,x){ return x; }
     {name:'map'     , resultAdapt: Argument3Adapt, stepAdapt:function(x, v, n, a){ a[n]=x;        }},
     {name:'filter'  , resultAdapt: Argument3Adapt, stepAdapt:function(x, v, n, a){ if(x){a[n]=v;} }},
     {name:'join'    , useOptimized: true },
-    {name:'values'  , useOptimized: true },
+    {name:'array'   , useOptimized: true },
     {name:'keys'    , useOptimized: true },
 ].forEach(function(method){
     ObjectWithArrayMethodsNonOptimized.prototype[method.name] = method.useOptimized ?

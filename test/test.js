@@ -38,8 +38,8 @@ describe("array",function(){
         beforeEach(function(){
             algo={a:'7', b:'8', c:'9'};
         })
-        it("values", function(){
-            var res = likear(algo).values();
+        it("array", function(){
+            var res = likear(algo).array();
             expect(res).to.eql(['7','8','9']);
         });
         it("keys", function(){
@@ -112,7 +112,7 @@ describe("array",function(){
             expect(JSON.stringify(res)).to.eql('{"a":"7!?","c":"9!?"}');
             expect(json4all.stringify(res)).to.eql('{"a":"7!?","c":"9!?"}');
             expect(algo).to.eql({a:'7', b:'8', c:'w'});
-            expect(res.values()).to.eql(['7!?', '9!?']);
+            expect(res.array()).to.eql(['7!?', '9!?']);
             expect(res.keys()).to.eql(['a', 'c']);
             expect(res.join()).to.eql('7!?,9!?');
         });
