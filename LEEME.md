@@ -1,5 +1,5 @@
 <!--multilang v0 es:LEEME.md en:README.md -->
-  # like-ar
+# like-ar
 <!--lang:es-->
 Using objects like arrays with map, filter, forEach and others coming soon.
 <!--lang:en--]
@@ -74,10 +74,24 @@ función             | valor devuelto
 --------------------|--------------------
 `forEach(cb, this)` | `undefined`
 `map(cb, this)`     | objeto encadenable con las mismas claves y los valores mapeados
-
+`filter(cb, this)`  | objeto encadenable con los mismas claves y valores para los que la función callback retornó true
+`join(separator)`   | texto con los valores unidos por el separador
+`array()`           | arreglo conteniendo solo los valores
+`keys()`            | arreglo conteniendo solo las claves
 
 <!--lang:en--]
-# Usage
+The callback functions receive these parameters: `value`, `key` and the original object.
+The functions that in the Array case returns Arrays returns a chainable object.
+
+function            | returned value
+--------------------|--------------------
+`forEach(cb, this)` | `undefined`
+`map(cb, this)`     | chainable object with the same keys and the value mapeds
+`filter(db, this)`  | chainable object with the same keys and values for only that key/value that returns true in the callback function
+`join(separator)`   | string with the join of the values
+`array()`           | array of values
+`keys()`            | array of keys
+
 <!--lang:es-->
 forEach
 -------
