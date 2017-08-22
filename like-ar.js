@@ -74,6 +74,14 @@ function ArrayAndKeys2Object(result, keys){
     return adapted;
 } 
 
+ObjectWithArrayMethodsOptimized.prototype.plain = function plain(){
+    var o = {};
+    likeAr(this).forEach(function(value, key){
+        o[key]=value;
+    });
+    return o;
+}
+
 function Argument3Adapt(__,___,x){ return x; }
 
 [
@@ -83,6 +91,7 @@ function Argument3Adapt(__,___,x){ return x; }
     {name:'join'    , useOptimized: true },
     {name:'array'   , useOptimized: true },
     {name:'keys'    , useOptimized: true },
+    {name:'plain'   , useOptimized: true },
 ].forEach(function(method){
     ObjectWithArrayMethodsNonOptimized.prototype[method.name] = method.useOptimized ?
     ObjectWithArrayMethodsOptimized.prototype[method.name] :

@@ -78,6 +78,7 @@ función             | valor devuelto
 `join(separator)`   | texto con los valores unidos por el separador
 `array()`           | arreglo conteniendo solo los valores
 `keys()`            | arreglo conteniendo solo las claves
+`plain()`           | obtengo un arreglo plano
 
 <!--lang:en--]
 The callback functions receive these parameters: `value`, `key` and the original object.
@@ -91,6 +92,7 @@ function            | returned value
 `join(separator)`   | string with the join of the values
 `array()`           | array of values
 `keys()`            | array of keys
+`plain()`           | plain array
 
 <!--lang:es-->
 forEach

@@ -54,6 +54,7 @@ function            | returned value
 `join(separator)`   | string with the join of the values
 `array()`           | array of values
 `keys()`            | array of keys
+`plain()`           | plain array
 
 # Usage
 ```sh

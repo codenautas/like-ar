@@ -75,7 +75,7 @@ describe("array",function(){
             })
             expect(algo).to.eql({a:'7', b:'y', c:'9'})
         });
-        it("filter", function(){
+        it("filter and plain", function(){
             var res = likear(algo).filter(function(valor, indice, contenedor){
                 if(indice=='b'){
                     contenedor[indice]='z';
@@ -87,6 +87,12 @@ describe("array",function(){
                 b:'8',
             })
             expect(algo).to.eql({a:'7', b:'z', c:'9'})
+            var plain = res.plain();
+            expect(plain).to.eql({
+                a:'7',
+                b:'8',
+            });
+            expect(plain.constructor).to.eql(Object);
         });
         it("join", function(){
             var res = likear(algo).join('<>');
