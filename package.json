@@ -1,11 +1,12 @@
 {
   "name": "like-ar",
   "description": "Using objects like arrays with map, filter, forEach and others coming soon.",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "author": "Codenautas <codenautas@googlegroups.com>",
   "repository": "codenautas/like-ar",
   "license": "MIT",
   "main": "like-ar.js",
+  "types": "like-ar.d.ts",
   "files": [
     "like-ar.js"
   ],
