@@ -8,15 +8,14 @@
   "main": "like-ar.js",
   "types": "like-ar.d.ts",
   "files": [
-    "like-ar.js"
+    "like-ar.js",
+    "like-ar.d.ts"
   ],
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "expect.js": "~0.3.1",
     "istanbul": "~0.4.5",
     "mocha": "~3.3.0",
-    
     "json4all": "~0.3.3"
   },
   "engines": {
