@@ -14,7 +14,8 @@
   "dependencies": {},
   "devDependencies": {
     "expect.js": "~0.3.1",
-    "json4all": "~0.3.3"
+    "json4all": "~0.3.3",
+    "mocha": "~5.2.0"
   },
   "engines": {
     "node": ">= 4.0.0"
