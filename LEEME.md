@@ -13,9 +13,7 @@ Using objects like arrays with map, filter, forEach and others coming soon.
 [![downloads](https://img.shields.io/npm/dm/like-ar.svg)](https://npmjs.org/package/like-ar)
 [![build](https://img.shields.io/travis/codenautas/like-ar/master.svg)](https://travis-ci.org/codenautas/like-ar)
 [![coverage](https://img.shields.io/coveralls/codenautas/like-ar/master.svg)](https://coveralls.io/r/codenautas/like-ar)
-[![climate](https://img.shields.io/codeclimate/github/codenautas/like-ar.svg)](https://codeclimate.com/github/codenautas/like-ar)
 [![dependencies](https://img.shields.io/david/codenautas/like-ar.svg)](https://david-dm.org/codenautas/like-ar)
-[![qa-control](http://codenautas.com/github/codenautas/like-ar.svg)](http://codenautas.com/github/codenautas/like-ar)
 
 
 <!--multilang buttons-->
@@ -56,19 +54,30 @@ var likeAr = require('like-ar');
 
 var object={
     lastName:'Perez',
-    firstName:'Diego'
+    firstName:'Diego',
+    phone:'+45-11-2222-3333'
 }
 
 likeAr(object).forEach(function(value, attrName, object){
     console.log(attrName,':',value);
 });
+
+console.log(
+    likeAr(object).filter(function(value, attrName){
+        return attrName.contains('Name');
+    }).map(function(value,attrName){
+        return attrName+':'+value
+    }).join(', ')
+);
+
 ```
 
 <!--lang:*-->
 # API
+
+## likeAr(object)
 <!--lang:es-->
-Todas las funciones callback reciben como parámetro: valor, clave y objeto original. 
-Las funciones que en el caso de arrays devuelven un array en estas devuelven un objeto encadenable. 
+Devuelve el objeto encadenable. Ese objeto tiene los siguientes métodos:
 
 función             | valor devuelto
 --------------------|--------------------
@@ -78,7 +87,9 @@ función             | valor devuelto
 `join(separator)`   | texto con los valores unidos por el separador
 `array()`           | arreglo conteniendo solo los valores
 `keys()`            | arreglo conteniendo solo las claves
-`plain()`           | obtengo un arreglo plano
+`plain()`           | devuelve un objeto plano (donde ya no se puede llamar a `forEach`, `map`, `filter`, etc)
+
+Todas las funciones callback (`cb`) reciben como parámetro: valor, clave y objeto original. 
 
 <!--lang:en--]
 The callback functions receive these parameters: `value`, `key` and the original object.
@@ -92,33 +103,44 @@ function            | returned value
 `join(separator)`   | string with the join of the values
 `array()`           | array of values
 `keys()`            | array of keys
-`plain()`           | plain array
+`plain()`           | plain object without likeAr functions
+
+[!--lang:*-->
+
+## likeAr.toPlainObject(array [,keyName [,valueName]])
 
 <!--lang:es-->
-forEach
--------
+Construye un objeto común (no encadenable) a partir de un arreglo de pares. 
+
+Parámetros predeterminados: si no se especifica `keyName` se usan 0 y 1 y se supone que los pares vienen en un arreglo. 
+Si se especifica `keyName` el valor predeterminado de `valueName` es `"value"`.
+
 
 <!--lang:en--]
-# Usage
+Returns a plain object from an array of pairs. 
+
+Default values: `0` and `1` if `keyName` is not set. `"value"` for `valueName` if `keyName` is set.
+
 [!--lang:*-->
+# Usage
+
 ```sh
 var likeAr = require('like-ar');
 
-var object={
-    lastName:'Perez',
-    firstName:'Diego'
-}
+var pairs=[['lastName', 'Perez'], ['firstName', 'Diego']];
 
-likeAr(object).forEach(function(value, attrName, object){
-    console.log(attrName,':',value);
-});
+console.log(likeAr.toPlainObject(pairs));
+
+var pairs=[{field:'lastName', value:'Perez'}, {field:'firstName', value:'Diego'}];
+
+console.log(likeAr.toPlainObject(pairs, 'field'));
 ```
 
 <!--lang:es-->
 ## Licencia
 <!--lang:en--]
 ## License
-   [!--lang:*-->
+[!--lang:*-->
   
 [MIT](LICENSE)
 
