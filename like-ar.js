@@ -138,6 +138,20 @@ ObjectWithArrayMethodsOptimized.prototype.filter = function filter(f, fThis){
     return acumulator;
 };
 
+likeAr.toPlainObject = function toPlainObject(pairs, keyName, valueName){
+    var o={};
+    pairs.forEach(function(pair, i){
+        if(keyName==null){
+            keyName=0;
+            valueName=valueName||1;
+        }else if(valueName==null){
+            valueName='value';
+        }
+        o[pair[keyName]]=pair[valueName];
+    });
+    return o;
+};
+
 return likeAr;
 
 });

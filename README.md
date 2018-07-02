@@ -7,9 +7,7 @@ Using objects like arrays with map, filter, forEach and others coming soon.
 [![downloads](https://img.shields.io/npm/dm/like-ar.svg)](https://npmjs.org/package/like-ar)
 [![build](https://img.shields.io/travis/codenautas/like-ar/master.svg)](https://travis-ci.org/codenautas/like-ar)
 [![coverage](https://img.shields.io/coveralls/codenautas/like-ar/master.svg)](https://coveralls.io/r/codenautas/like-ar)
-[![climate](https://img.shields.io/codeclimate/github/codenautas/like-ar.svg)](https://codeclimate.com/github/codenautas/like-ar)
 [![dependencies](https://img.shields.io/david/codenautas/like-ar.svg)](https://david-dm.org/codenautas/like-ar)
-[![qa-control](http://codenautas.com/github/codenautas/like-ar.svg)](http://codenautas.com/github/codenautas/like-ar)
 
 
 
@@ -34,15 +32,27 @@ var likeAr = require('like-ar');
 
 var object={
     lastName:'Perez',
-    firstName:'Diego'
+    firstName:'Diego',
+    phone:'+45-11-2222-3333'
 }
 
 likeAr(object).forEach(function(value, attrName, object){
     console.log(attrName,':',value);
 });
+
+console.log(
+    likeAr(object).filter(function(value, attrName){
+        return attrName.contains('Name');
+    }).map(function(value,attrName){
+        return attrName+':'+value
+    }).join(', ')
+);
+
 ```
 
 # API
+
+## likeAr(object)
 The callback functions receive these parameters: `value`, `key` and the original object.
 The functions that in the Array case returns Arrays returns a chainable object.
 
@@ -54,20 +64,27 @@ function            | returned value
 `join(separator)`   | string with the join of the values
 `array()`           | array of values
 `keys()`            | array of keys
-`plain()`           | plain array
+`plain()`           | plain object without likeAr functions
+
+
+## likeAr.toPlainObject(array [,keyName [,valueName]])
+
+Returns a plain object from an array of pairs.
+
+Default values: `0` and `1` if `keyName` is not set. `"value"` for `valueName` if `keyName` is set.
 
 # Usage
+
 ```sh
 var likeAr = require('like-ar');
 
-var object={
-    lastName:'Perez',
-    firstName:'Diego'
-}
+var pairs=[['lastName', 'Perez'], ['firstName', 'Diego']];
 
-likeAr(object).forEach(function(value, attrName, object){
-    console.log(attrName,':',value);
-});
+console.log(likeAr.toPlainObject(pairs));
+
+var pairs=[{field:'lastName', value:'Perez'}, {field:'firstName', value:'Diego'}];
+
+console.log(likeAr.toPlainObject(pairs, 'field'));
 ```
 
 ## License

@@ -24,6 +24,27 @@ describe("array",function(){
         ])
         expect(algo).to.eql(['7', 'z', '9'])
     });
+    it("creates from array of array", function(){
+        var two={alfa:'beta'};
+        var pairs=[['one', 1], ['two', two]];
+        var obtained=LikeAr.toPlainObject(pairs);
+        expect(obtained).to.eql({one:1, two:two});
+        expect(obtained.two).to.be(two);
+    });
+    it("creates from array of pairs with value", function(){
+        var two={alfa:'beta'};
+        var pairs=[{column:'one', value:1}, {column:'two', value:two}];
+        var obtained=LikeAr.toPlainObject(pairs,"column");
+        expect(obtained).to.eql({one:1, two:two});
+        expect(obtained.two).to.be(two);
+    });
+    it("creates from array of pairs", function(){
+        var two={alfa:'beta'};
+        var pairs=[{c:'one', v:1}, {c:'two', v:two}];
+        var obtained=LikeAr.toPlainObject(pairs,"c","v");
+        expect(obtained).to.eql({one:1, two:two});
+        expect(obtained.two).to.be(two);
+    })
 });
 
 
