@@ -12,6 +12,7 @@ declare module "like-ar"{
     namespace likeAr{
         function toPlainObject<T>(array:[string, T][]):{[key:string]:T}
         function toPlainObject<T, K extends keyof T>(array:T, keyName:K, valueName:K):{[key:string]:T}
+        function toPlainObject<T>(arrayKeys:[string], arrayValues:[T]):{[key:string]:T}
     }
     export = likeAr
 }
