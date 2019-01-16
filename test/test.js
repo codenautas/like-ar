@@ -45,6 +45,14 @@ describe("array",function(){
         expect(obtained).to.eql({one:1, two:two});
         expect(obtained.two).to.be(two);
     })
+    it("creates from pair of arrays", function(){
+        var two={alfa:'beta'};
+        var keys=['one', 'two', 'three'];
+        var values=[1, two, 33]
+        var obtained=LikeAr.toPlainObject(keys, values);
+        expect(obtained).to.eql({one:1, two:two, three:33});
+        expect(obtained.two).to.be(two);
+    })
 });
 
 

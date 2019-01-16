@@ -1,7 +1,7 @@
 {
   "name": "like-ar",
   "description": "Using objects like arrays with map, filter, forEach and others coming soon.",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "author": "Codenautas <codenautas@googlegroups.com>",
   "repository": "codenautas/like-ar",
   "license": "MIT",

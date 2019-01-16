@@ -108,16 +108,17 @@ function            | returned value
 [!--lang:*-->
 
 ## likeAr.toPlainObject(array [,keyName [,valueName]])
+## likeAr.toPlainObject(arrayOfKeys, arrayOfValues)
 
 <!--lang:es-->
-Construye un objeto común (no encadenable) a partir de un arreglo de pares. 
+Construye un objeto común (no encadenable) a partir de un arreglo de pares (o de un par de arreglos) de claves y valores. 
 
 Parámetros predeterminados: si no se especifica `keyName` se usan 0 y 1 y se supone que los pares vienen en un arreglo. 
 Si se especifica `keyName` el valor predeterminado de `valueName` es `"value"`.
 
 
 <!--lang:en--]
-Returns a plain object from an array of pairs. 
+Returns a plain object from an array of pairs (or a pair of arrays) of key/values. 
 
 Default values: `0` and `1` if `keyName` is not set. `"value"` for `valueName` if `keyName` is set.
 

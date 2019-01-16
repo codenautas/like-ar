@@ -68,8 +68,9 @@ function            | returned value
 
 
 ## likeAr.toPlainObject(array [,keyName [,valueName]])
+## likeAr.toPlainObject(arrayOfKeys, arrayOfValues)
 
-Returns a plain object from an array of pairs.
+Returns a plain object from an array of pairs (or a pair of arrays) of key/values.
 
 Default values: `0` and `1` if `keyName` is not set. `"value"` for `valueName` if `keyName` is set.
 

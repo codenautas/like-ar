@@ -138,17 +138,29 @@ ObjectWithArrayMethodsOptimized.prototype.filter = function filter(f, fThis){
     return acumulator;
 };
 
-likeAr.toPlainObject = function toPlainObject(pairs, keyName, valueName){
+likeAr.toPlainObject = function toPlainObject(pairsOrArrayOfKeys, keyNameOrArrayOfValues, valueName){
     var o={};
-    pairs.forEach(function(pair, i){
+    if(keyNameOrArrayOfValues && keyNameOrArrayOfValues instanceof Array){
+        if(keyNameOrArrayOfValues.length!=pairsOrArrayOfKeys.length){
+            throw new Error('ERROR like-ar.toPlainObject arrays of different lenght');
+        }
+        keyNameOrArrayOfValues.forEach(function(value, i){
+            o[pairsOrArrayOfKeys[i]]=value;
+        });
+
+    }else{
+        var keyName=keyNameOrArrayOfValues;
+        var pairs=pairsOrArrayOfKeys;
         if(keyName==null){
             keyName=0;
             valueName=valueName||1;
         }else if(valueName==null){
             valueName='value';
         }
-        o[pair[keyName]]=pair[valueName];
-    });
+        pairs.forEach(function(pair, i){
+            o[pair[keyName]]=pair[valueName];
+        });
+    }
     return o;
 };
 
