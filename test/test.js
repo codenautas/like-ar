@@ -6,6 +6,19 @@ var json4all=require('json4all')
 
 var LikeAr = require('../like-ar.js');
 
+class ObjectWithGetters{
+    constructor(o,t){
+        Object.defineProperty(this,"_one",{value:o});
+        Object.defineProperty(this,"_two",{value:t});
+    }
+    get one(){
+        return this._one;
+    }
+    get two(){
+        return this._two;
+    }
+}
+
 describe("array",function(){
     var algo;
     beforeEach(function(){
@@ -144,5 +157,12 @@ describe("array",function(){
             expect(res.join()).to.eql('7!?,9!?');
         });
     });
+    describe("object with getters",function(){
+        var o=new ObjectWithGetters(1,2);
+        it("iterates ObjectWithGetters", function(){
+            var obt=LikeAr(o,{all:true}).map(function(v,n){ return n+':'+v; }).join(',');
+            expect(obt).to.eql("one:1,two:2");
+        })
+    })
   });
 });

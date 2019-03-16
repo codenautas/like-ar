@@ -8,7 +8,10 @@ declare module "like-ar"{
         plain  :() => {[key:string]:T}
         join   :(separator:string) => string
     }
-    function likeAr<T>(o:{[key:string]:T}):ObjectWithArrayFunctions<T>
+    type LikeArOptions={
+        
+    }
+    function likeAr<T>(o:{[key:string]:T},options?:LikeArOptions):ObjectWithArrayFunctions<T>
     namespace likeAr{
         function toPlainObject<T>(array:[string, T][]):{[key:string]:T}
         function toPlainObject<T, K extends keyof T>(array:T, keyName:K, valueName:K):{[key:string]:T}

@@ -24,26 +24,31 @@
 var likeAr = {};
 /*jshint +W004 */
 
-function AdaptWithArrayMethods(objectData, objectBase){
+function AdaptWithArrayMethods(objectData, objectBase, opts){
     Object.defineProperty(objectData, '_object', { value: objectBase||objectData});
+    Object.defineProperty(objectData, '_opts', { value: opts||likeAr.defaultOpts});
 }
 
-var ObjectWithArrayMethodsNonOptimized = function anonymous(o){
-    AdaptWithArrayMethods(this, o);
+var ObjectWithArrayMethodsNonOptimized = function anonymous(o,  opts){
+    AdaptWithArrayMethods(this, o, opts);
 };
 
-var ObjectWithArrayMethodsOptimized = function anonymous(o){
-    AdaptWithArrayMethods(this, o);
+var ObjectWithArrayMethodsOptimized = function anonymous(o, opts){
+    AdaptWithArrayMethods(this, o, opts);
 };
 
 function id(x){ return x; }
 
-likeAr = function object2Array(o){
-    return new ObjectWithArrayMethodsOptimized(o);
+likeAr = function likeAr(o, opts){
+    return new ObjectWithArrayMethodsOptimized(o, opts);
 };
 
-likeAr.nonOptimized = function object2Array(o){
-    return new ObjectWithArrayMethodsNonOptimized(o);
+likeAr.defaultOpts={
+    all:false
+}
+
+likeAr.nonOptimized = function likeAr(o, opts){
+    return new ObjectWithArrayMethodsNonOptimized(o, opts);
 };
 
 ObjectWithArrayMethodsOptimized.prototype.keys = function keys(){
@@ -56,7 +61,7 @@ ObjectWithArrayMethodsOptimized.prototype.array = function array(){
         return Object.values(oThis);
     }
     var arr = [];
-    for(var attr in oThis){ if(oThis.hasOwnProperty(attr)){
+    for(var attr in oThis){ if(this._opts.all || oThis.hasOwnProperty(attr)){
         arr.push(oThis[attr]);
     }}
     return arr;
@@ -112,24 +117,30 @@ function Argument3Adapt(__,___,x){ return x; }
 
 ObjectWithArrayMethodsOptimized.prototype.forEach = function forEach(f, fThis){
     var oThis=this._object;
-    for(var attr in oThis){ if(oThis.hasOwnProperty(attr)){
+    for(var attr in oThis){ if(this._opts.all || oThis.hasOwnProperty(attr)){
         f.call(fThis, oThis[attr], attr, oThis);
     }}
 };
 
+const util = require('util');
+
 ObjectWithArrayMethodsOptimized.prototype.map = function map(f, fThis){
     var oThis=this._object;
+    console.log('xxxx')
+    util.inspect(this,true,2);
     var acumulator = likeAr();
-    for(var attr in oThis){ if(oThis.hasOwnProperty(attr)){
-        acumulator[attr] = f.call(fThis, oThis[attr], attr, oThis);
-    }}
+    for(var attr in oThis){ 
+        if(this._opts.all || oThis.hasOwnProperty(attr)){
+            acumulator[attr] = f.call(fThis, oThis[attr], attr, oThis);
+        }
+    }
     return acumulator;
 };
 
 ObjectWithArrayMethodsOptimized.prototype.filter = function filter(f, fThis){
     var oThis=this._object;
     var acumulator = likeAr();
-    for(var attr in oThis){ if(oThis.hasOwnProperty(attr)){
+    for(var attr in oThis){ if(this._opts.all || oThis.hasOwnProperty(attr)){
         var value = oThis[attr];
         if(f.call(fThis, value, attr, oThis)){
             acumulator[attr] = value;
