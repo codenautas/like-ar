@@ -53,6 +53,13 @@ describe("array",function(){
         expect(obtained).to.eql({one:1, two:two, three:33});
         expect(obtained.two).to.be(two);
     })
+    it("error creating from pair of arrays", function(){
+        expect(function(){
+            var keys=['one', 'two'];
+            var values=[1, 2, 33];
+            LikeAr.toPlainObject(keys, values);
+        }).to.throwError(/different length/)
+    })
 });
 
 
@@ -70,6 +77,12 @@ describe("array",function(){
         it("array", function(){
             var res = likear(algo).array();
             expect(res).to.eql(['7','8','9']);
+        });
+        it("array like old JS", function(){
+            LikeAr.testingLikeOldJs=true;
+            var res = likear(algo).array();
+            expect(res).to.eql(['7','8','9']);
+            LikeAr.testingLikeOldJs=false;
         });
         it("keys", function(){
             var res = likear(algo).keys();
@@ -135,9 +148,9 @@ describe("array",function(){
                     contenedor[indice]='w';
                 }
                 return valor+'!';
-            }).filter(function(valor, indice, contenedor){
+            }).filter(function(valor, _indice, _contenedor){
                 return valor!='8!';
-            }).map(function(valor, indice, contenedor){
+            }).map(function(valor, _indice, _contenedor){
                 return valor+'?';
             });
             expect(res).to.eql({

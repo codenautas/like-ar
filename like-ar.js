@@ -24,6 +24,8 @@
 var likeAr = {};
 /*jshint +W004 */
 
+likeAr.testingLikeOldJs=false;
+
 function AdaptWithArrayMethods(objectData, objectBase){
     Object.defineProperty(objectData, '_object', { value: objectBase||objectData});
 }
@@ -52,7 +54,7 @@ ObjectWithArrayMethodsOptimized.prototype.keys = function keys(){
 
 ObjectWithArrayMethodsOptimized.prototype.array = function array(){
     var oThis=this._object;
-    if(typeof Object.values === 'function'){
+    if(typeof Object.values === 'function' && !likeAr.testingLikeOldJs){
         return Object.values(oThis);
     }
     var arr = [];
@@ -66,6 +68,7 @@ ObjectWithArrayMethodsOptimized.prototype.join = function join(separator){
     return this.array().join(separator);
 };
 
+/*
 function ArrayAndKeys2Object(result, keys){ 
     var adapted = {};
     keys.forEach(function(arrayKey, arrayIndex){
@@ -73,6 +76,7 @@ function ArrayAndKeys2Object(result, keys){
     });
     return adapted;
 } 
+*/
 
 ObjectWithArrayMethodsOptimized.prototype.plain = function plain(){
     var o = {};
@@ -101,10 +105,7 @@ function Argument3Adapt(__,___,x){ return x; }
         var acumulator=likeAr.nonOptimized();
         var result=keys[method.name](function(arrayKey, arrayIndex){
             var arrayValue=oThis[arrayKey];
-            return (method.stepAdapt||id)(
-                typeof f === "function" ? f.call(fThis, arrayValue, arrayKey, oThis) : f, 
-                arrayValue, arrayKey, acumulator
-            );
+            return (method.stepAdapt||id)(f.call(fThis, arrayValue, arrayKey, oThis), arrayValue, arrayKey, acumulator);
         }, fThis);
         return (method.resultAdapt||id)(result, keys, acumulator);
     };
@@ -142,7 +143,7 @@ likeAr.toPlainObject = function toPlainObject(pairsOrArrayOfKeys, keyNameOrArray
     var o={};
     if(keyNameOrArrayOfValues && keyNameOrArrayOfValues instanceof Array){
         if(keyNameOrArrayOfValues.length!=pairsOrArrayOfKeys.length){
-            throw new Error('ERROR like-ar.toPlainObject arrays of different lenght');
+            throw new Error('ERROR like-ar.toPlainObject arrays of different length');
         }
         keyNameOrArrayOfValues.forEach(function(value, i){
             o[pairsOrArrayOfKeys[i]]=value;
