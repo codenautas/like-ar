@@ -96,6 +96,7 @@ function Argument3Adapt(__,___,x){ return x; }
     {name:'array'   , useOptimized: true },
     {name:'keys'    , useOptimized: true },
     {name:'plain'   , useOptimized: true },
+    {name:'build'   , useOptimized: true },
 ].forEach(function(method){
     ObjectWithArrayMethodsNonOptimized.prototype[method.name] = method.useOptimized ?
     ObjectWithArrayMethodsOptimized.prototype[method.name] :
@@ -123,6 +124,18 @@ ObjectWithArrayMethodsOptimized.prototype.map = function map(f, fThis){
     var acumulator = likeAr();
     for(var attr in oThis){ if(oThis.hasOwnProperty(attr)){
         acumulator[attr] = f.call(fThis, oThis[attr], attr, oThis);
+    }}
+    return acumulator;
+};
+
+ObjectWithArrayMethodsOptimized.prototype.build = function build(f, fThis){
+    var oThis=this._object;
+    var acumulator = likeAr();
+    for(var attr in oThis){ if(oThis.hasOwnProperty(attr)){
+        var result = f.call(fThis, oThis[attr], attr, oThis);
+        for(var attrResult in result){
+            acumulator[attrResult]=result[attrResult];
+        }
     }}
     return acumulator;
 };

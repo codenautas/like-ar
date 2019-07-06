@@ -107,6 +107,31 @@ function            | returned value
 
 [!--lang:*-->
 
+## likeAr(object).build(cb(value, key))
+<!--lang:es-->
+Construye un objeto nuevo con las claves cambiadas. 
+La función `cb` debe devolver el elemento como un objeto de un solo campo `{k: v}` que se usará para componer el resultado final. 
+
+<!--lang:en--]
+Builds a new object with new keys. 
+
+The callback function must return a `{key: value}` object to compose the final result. 
+[!--lang:*-->
+
+```ts
+var pairs=[{field:'lastName', value:'Perez'}, {field:'firstName', value:'Diego'}];
+
+console.log(likeAr(pairs).build(funciton(pair){ return {[pair.field]: pair.value}; ));
+// {lastName: "Perez", firstName: "Diego"}
+
+var toJoin=[{lastName:'Perez'}, {firstName:'Diego'}];
+
+console.log(likeAr(toJoin).build(funciton(objectWithOneKey){ return objectWithOneKey; ));
+// {lastName: "Perez", firstName: "Diego"}
+
+```
+
+
 ## likeAr.toPlainObject(array [,keyName [,valueName]])
 ## likeAr.toPlainObject(arrayOfKeys, arrayOfValues)
 

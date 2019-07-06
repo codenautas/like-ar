@@ -3,6 +3,7 @@ declare module "like-ar"{
         forEach:( callback:(value:T  , key:string)=>void   ) => ObjectWithArrayFunctions<T>
         map    :<U>( callback:(value:T, key:string)=>U     ) => ObjectWithArrayFunctions<U>
         filter :( callback:(value:T  , key:string)=>boolean) => ObjectWithArrayFunctions<T>
+        build  :<U>( callback:(value:T, key:string)=>{[key:string]:U}) => ObjectWithArrayFunctions<U>
         keys   :() => string[]
         array  :() => T[]
         plain  :() => {[key:string]:T}

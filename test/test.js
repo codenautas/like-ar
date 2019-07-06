@@ -164,6 +164,18 @@ describe("array",function(){
             expect(res.keys()).to.eql(['a', 'c']);
             expect(res.join()).to.eql('7!?,9!?');
         });
+        it("map array", function(){
+            var result = LikeAr([{a:11}, {a:12}, {a:14}]).map(function(value){ return value.a*10; });
+            expect(result).to.eql({0:110, 1:120, 2:140});
+        });
+        it("build object", function(){
+            var result = LikeAr(algo).build(function(value, key){ return {['_'+key]:'"'+value+'"'}; });
+            expect(result).to.eql({_a:'"7"', _b:'"8"', _c:'"9"'});
+        });
+        it("build object from array", function(){
+            var result = LikeAr([{a:11}, {b:12}, {c:14}]).build(function(value){ return value; });
+            expect(result).to.eql({a:11, b:12, c:14});
+        });
     });
   });
 });

@@ -67,6 +67,25 @@ function            | returned value
 `plain()`           | plain object without likeAr functions
 
 
+## likeAr(object).build(cb(value, key))
+Builds a new object with new keys.
+
+The callback function must return a `{key: value}` object to compose the final result.
+
+```ts
+var pairs=[{field:'lastName', value:'Perez'}, {field:'firstName', value:'Diego'}];
+
+console.log(likeAr(pairs).build(funciton(pair){ return {[pair.field]: pair.value}; ));
+// {lastName: "Perez", firstName: "Diego"}
+
+var toJoin=[{lastName:'Perez'}, {firstName:'Diego'}];
+
+console.log(likeAr(toJoin).build(funciton(objectWithOneKey){ return objectWithOneKey; ));
+// {lastName: "Perez", firstName: "Diego"}
+
+```
+
+
 ## likeAr.toPlainObject(array [,keyName [,valueName]])
 ## likeAr.toPlainObject(arrayOfKeys, arrayOfValues)
 
