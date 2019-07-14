@@ -1,6 +1,7 @@
 "use strict";
 
 var expect=require('expect.js')
+var discrepances = require('discrepances');
 
 var json4all=require('json4all')
 
@@ -18,11 +19,11 @@ describe("array",function(){
             }
             return valor!='9';
         });
-        expect(res).to.eql([
+        discrepances.showAndThrow(res,[
             '7',
             '8',
-        ])
-        expect(algo).to.eql(['7', 'z', '9'])
+        ]);
+        discrepances.showAndThrow(algo,['7', 'z', '9']);
     });
     it("creates from array of array", function(){
         var two={alfa:'beta'};
@@ -76,12 +77,12 @@ describe("array",function(){
         })
         it("array", function(){
             var res = likear(algo).array();
-            expect(res).to.eql(['7','8','9']);
+            discrepances.showAndThrow(res,['7','8','9']);
         });
         it("array like old JS", function(){
             LikeAr.testingLikeOldJs=true;
             var res = likear(algo).array();
-            expect(res).to.eql(['7','8','9']);
+            discrepances.showAndThrow(res,['7','8','9']);
             LikeAr.testingLikeOldJs=false;
         });
         it("keys", function(){
@@ -164,13 +165,31 @@ describe("array",function(){
             expect(res.keys()).to.eql(['a', 'c']);
             expect(res.join()).to.eql('7!?,9!?');
         });
-        it("map array", function(){
+        it("map array into object", function(){
             var result = LikeAr([{a:11}, {a:12}, {a:14}]).map(function(value){ return value.a*10; });
-            expect(result).to.eql({0:110, 1:120, 2:140});
+            discrepances.showAndThrow(result, {0:110, 1:120, 2:140});
+        });
+        it("map array get pure array", function(){
+            var result = LikeAr([{a:11}, {a:12}, {a:14}]).map(function(value){ return value.a*10; }).array();
+            discrepances.showAndThrow(result, [110, 120, 140]);
+        });
+        it("map array get pure array like OldJs", function(){
+            LikeAr.testingLikeOldJs=true;
+            var result = LikeAr([{a:11}, {a:12}, {a:14}]).map(function(value){ return value.a*10; }).array();
+            discrepances.showAndThrow(result, [110, 120, 140]);
+            LikeAr.testingLikeOldJs=false;
         });
         it("build object", function(){
             var result = LikeAr(algo).build(function(value, key){ return {['_'+key]:'"'+value+'"'}; });
             expect(result).to.eql({_a:'"7"', _b:'"8"', _c:'"9"'});
+        });
+        it("chained build object", function(){
+            var result = LikeAr(algo).filter(function(value){ 
+                return value !=7 
+            }).build(function(value, key){ 
+                return {['_'+key]:'"'+value+'"'}; 
+            });
+            expect(result).to.eql({_b:'"8"', _c:'"9"'});
         });
         it("build object from array", function(){
             var result = LikeAr([{a:11}, {b:12}, {c:14}]).build(function(value){ return value; });
