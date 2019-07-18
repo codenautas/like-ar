@@ -161,7 +161,6 @@ likeAr.toPlainObject = function toPlainObject(pairsOrArrayOfKeys, keyNameOrArray
         keyNameOrArrayOfValues.forEach(function(value, i){
             o[pairsOrArrayOfKeys[i]]=value;
         });
-
     }else{
         var keyName=keyNameOrArrayOfValues;
         var pairs=pairsOrArrayOfKeys;
@@ -175,6 +174,16 @@ likeAr.toPlainObject = function toPlainObject(pairsOrArrayOfKeys, keyNameOrArray
             o[pair[keyName]]=pair[valueName];
         });
     }
+    return o;
+};
+
+likeAr.createIndex = function createIndex(array, keyname,){
+    var o={};
+    var keyName=keyname;
+    var pairs=array;
+    pairs.forEach(function(pair, i){
+        o[pair[keyName]]=pair;
+    });
     return o;
 };
 

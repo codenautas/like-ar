@@ -39,12 +39,19 @@ describe("array",function(){
         expect(obtained).to.eql({one:1, two:two});
         expect(obtained.two).to.be(two);
     });
+    it("creates an index object from array", function(){
+        var two={alfa:'beta'};
+        var pairs=[{column:'one', value:1}, {column:'two', value:two}];
+        var obtained=LikeAr.createIndex(pairs,"column");
+        expect(obtained).to.eql({one:{column:'one', value:1}, two:{column:'two', value:two}});
+        expect(obtained.two).to.eql(pairs[1]);
+    });
     it("creates from array of pairs", function(){
         var two={alfa:'beta'};
         var pairs=[{c:'one', v:1}, {c:'two', v:two}];
         var obtained=LikeAr.toPlainObject(pairs,"c","v");
         expect(obtained).to.eql({one:1, two:two});
-        expect(obtained.two).to.be(two);
+        expect(obtained.two).to.eql(two);
     })
     it("creates from pair of arrays", function(){
         var two={alfa:'beta'};

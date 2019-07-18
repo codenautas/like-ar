@@ -131,7 +131,6 @@ console.log(likeAr(toJoin).build(funciton(objectWithOneKey){ return objectWithOn
 
 ```
 
-
 ## likeAr.toPlainObject(array [,keyName [,valueName]])
 ## likeAr.toPlainObject(arrayOfKeys, arrayOfValues)
 
@@ -160,6 +159,30 @@ console.log(likeAr.toPlainObject(pairs));
 var pairs=[{field:'lastName', value:'Perez'}, {field:'firstName', value:'Diego'}];
 
 console.log(likeAr.toPlainObject(pairs, 'field'));
+```
+
+## likeAr.createIndex(array:T[],keyName:string):{[k:string]: T}
+
+<!--lang:es-->
+Construye un objeto común que será índice de los elementos de un arreglo existente. 
+Cada valor del objeto apunta a un elemento del arreglo existente.
+
+<!--lang:en--]
+Returns a plain object containing the same element indexed by keyName
+
+[!--lang:*-->
+# Usage
+
+```sh
+var likeAr = require('like-ar');
+
+var persons=[{name:'Diego', lastName:'Rivera', age:30}, {name:'Frida', lastName:'Kahlo'}];
+
+var idxPersons=likeAr.createIndex(persons, 'lastName');
+
+idxPersons.Kahlo.age=20;
+
+console.log(persons[1].age); // 20
 ```
 
 <!--lang:es-->
