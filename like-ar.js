@@ -133,6 +133,7 @@ ObjectWithArrayMethodsOptimized.prototype.build = function build(f, fThis){
     var acumulator = likeAr();
     for(var attr in oThis){ if(oThis.hasOwnProperty(attr)){
         var result = f.call(fThis, oThis[attr], attr, oThis);
+        // eslint-disable-next-line guard-for-in
         for(var attrResult in result){
             acumulator[attrResult]=result[attrResult];
         }
@@ -177,7 +178,7 @@ likeAr.toPlainObject = function toPlainObject(pairsOrArrayOfKeys, keyNameOrArray
     return o;
 };
 
-likeAr.createIndex = function createIndex(array, keyname,){
+likeAr.createIndex = function createIndex(array, keyname){
     var o={};
     var keyName=keyname;
     var pairs=array;
