@@ -14,7 +14,7 @@ declare module "like-ar"{
         function toPlainObject<T>(array:[string, T][]):{[key:string]:T}
         function toPlainObject<T, K extends keyof T>(array:T, keyName:K, valueName:K):{[key:string]:T[K]}
         function toPlainObject<T, K extends keyof any>(arrayKeys:K[], arrayValues:T[]):{[key in K]:T}
-        function createIndex<T, K extends keyof T>(array:T, keyName:K):{[key:string]:T}
+        function createIndex<T, K extends keyof T>(array:T[], keyName:K):{[key:string]:T}
     }
     export = likeAr
 }
