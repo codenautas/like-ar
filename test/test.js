@@ -98,37 +98,41 @@ describe("array",function(){
         });
         it("forEach", function(){
             var res=[];
-            likear(algo).forEach(function(valor, indice, contenedor){
-                res.push([valor, indice, contenedor]);
+            likear(algo).forEach(function(valor, indice, contenedor, posicion){
+                res.push([valor, indice, contenedor, posicion]);
                 if(indice=='b'){
                     contenedor[indice]='x';
                 }
             });
             expect(res).to.eql([
-                ['7', 'a', algo],
-                ['8', 'b', algo],
-                ['9', 'c', algo],
+                ['7', 'a', algo, 0],
+                ['8', 'b', algo, 1],
+                ['9', 'c', algo, 2],
             ]);
             expect(algo).to.eql({a:'7', b:'x', c:'9'})
         });
         it("map", function(){
-            var res = likear(algo).map(function(valor, indice, contenedor){
+            var res = likear(algo).map(function(valor, indice, contenedor, posicion){
                 if(indice=='b'){
                     contenedor[indice]='y';
                 }
-                return [valor, indice, contenedor];
+                return [valor, indice, contenedor, posicion];
             });
             expect(res).to.eql({
-                a:['7', 'a', algo],
-                b:['8', 'b', algo],
-                c:['9', 'c', algo],
+                a:['7', 'a', algo, 0],
+                b:['8', 'b', algo, 1],
+                c:['9', 'c', algo, 2],
             })
             expect(algo).to.eql({a:'7', b:'y', c:'9'})
         });
         it("filter and plain", function(){
-            var res = likear(algo).filter(function(valor, indice, contenedor){
+            var porPosicion=null;
+            var res = likear(algo).filter(function(valor, indice, contenedor, posicion){
                 if(indice=='b'){
                     contenedor[indice]='z';
+                }
+                if(posicion==1){
+                    porPosicion=indice;
                 }
                 return indice!='c';
             });
@@ -137,6 +141,7 @@ describe("array",function(){
                 b:'8',
             })
             expect(algo).to.eql({a:'7', b:'z', c:'9'})
+            expect(porPosicion).to.eql('b');
             var plain = res.plain();
             expect(plain).to.eql({
                 a:'7',
@@ -148,6 +153,10 @@ describe("array",function(){
             var res = likear(algo).join('<>');
             expect(res).to.eql('7<>8<>9');
             expect(algo).to.eql({a:'7', b:'8', c:'9'});
+        });
+        it("keyCount", function(){
+            var res = likear(algo).keyCount();
+            expect(res).to.eql(3);
         });
         it("chaining map filter map", function(){
             var res = likear(algo)

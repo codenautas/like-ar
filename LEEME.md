@@ -58,8 +58,8 @@ var object={
     phone:'+45-11-2222-3333'
 }
 
-likeAr(object).forEach(function(value, attrName, object){
-    console.log(attrName,':',value);
+likeAr(object).forEach(function(value, attrName, object, position){
+    console.log(position+'.',attrName,':',value);
 });
 
 console.log(
@@ -89,10 +89,10 @@ función             | valor devuelto
 `keys()`            | arreglo conteniendo solo las claves
 `plain()`           | devuelve un objeto plano (donde ya no se puede llamar a `forEach`, `map`, `filter`, etc)
 
-Todas las funciones callback (`cb`) reciben como parámetro: valor, clave y objeto original. 
+Todas las funciones callback (`cb`) reciben como parámetro: valor, clave, objeto original y posición (numérica comenzando con 0). 
 
 <!--lang:en--]
-The callback functions receive these parameters: `value`, `key` and the original object.
+The callback functions receive these parameters: `value`, `key`, the `original` object and the `position` (starting by 0).
 The functions that in the Array case returns Arrays returns a chainable object.
 
 function            | returned value
@@ -104,6 +104,7 @@ function            | returned value
 `array()`           | array of values
 `keys()`            | array of keys
 `plain()`           | plain object without likeAr functions
+
 
 [!--lang:*-->
 

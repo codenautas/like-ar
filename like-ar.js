@@ -86,6 +86,29 @@ ObjectWithArrayMethodsOptimized.prototype.plain = function plain(){
     return o;
 }
 
+ObjectWithArrayMethodsOptimized.prototype.build = function build(f, fThis){
+    var oThis=this._object;
+    var acumulator = likeAr();
+    var i=0;
+    for(var attr in oThis){ if(oThis.hasOwnProperty(attr)){
+        var result = f.call(fThis, oThis[attr], attr, oThis, i++);
+        // eslint-disable-next-line guard-for-in
+        for(var attrResult in result){
+            acumulator[attrResult]=result[attrResult];
+        }
+    }}
+    return acumulator;
+};
+
+ObjectWithArrayMethodsOptimized.prototype.keyCount = function keyCount(){
+    var oThis=this._object;
+    var i=0;
+    for(var attr in oThis){ if(oThis.hasOwnProperty(attr)){
+        i++;
+    }}
+    return i;
+};
+
 function Argument3Adapt(__,___,x){ return x; }
 
 [
@@ -97,6 +120,7 @@ function Argument3Adapt(__,___,x){ return x; }
     {name:'keys'    , useOptimized: true },
     {name:'plain'   , useOptimized: true },
     {name:'build'   , useOptimized: true },
+    {name:'keyCount', useOptimized: true },
 ].forEach(function(method){
     ObjectWithArrayMethodsNonOptimized.prototype[method.name] = method.useOptimized ?
     ObjectWithArrayMethodsOptimized.prototype[method.name] :
@@ -106,7 +130,7 @@ function Argument3Adapt(__,___,x){ return x; }
         var acumulator=likeAr.nonOptimized();
         var result=keys[method.name](function(arrayKey, arrayIndex){
             var arrayValue=oThis[arrayKey];
-            return (method.stepAdapt||id)(f.call(fThis, arrayValue, arrayKey, oThis), arrayValue, arrayKey, acumulator);
+            return (method.stepAdapt||id)(f.call(fThis, arrayValue, arrayKey, oThis, arrayIndex), arrayValue, arrayKey, acumulator);
         }, fThis);
         return (method.resultAdapt||id)(result, keys, acumulator);
     };
@@ -114,29 +138,18 @@ function Argument3Adapt(__,___,x){ return x; }
 
 ObjectWithArrayMethodsOptimized.prototype.forEach = function forEach(f, fThis){
     var oThis=this._object;
+    var i=0;
     for(var attr in oThis){ if(oThis.hasOwnProperty(attr)){
-        f.call(fThis, oThis[attr], attr, oThis);
+        f.call(fThis, oThis[attr], attr, oThis, i++);
     }}
 };
 
 ObjectWithArrayMethodsOptimized.prototype.map = function map(f, fThis){
     var oThis=this._object;
     var acumulator = likeAr();
+    var i=0;
     for(var attr in oThis){ if(oThis.hasOwnProperty(attr)){
-        acumulator[attr] = f.call(fThis, oThis[attr], attr, oThis);
-    }}
-    return acumulator;
-};
-
-ObjectWithArrayMethodsOptimized.prototype.build = function build(f, fThis){
-    var oThis=this._object;
-    var acumulator = likeAr();
-    for(var attr in oThis){ if(oThis.hasOwnProperty(attr)){
-        var result = f.call(fThis, oThis[attr], attr, oThis);
-        // eslint-disable-next-line guard-for-in
-        for(var attrResult in result){
-            acumulator[attrResult]=result[attrResult];
-        }
+        acumulator[attr] = f.call(fThis, oThis[attr], attr, oThis, i++);
     }}
     return acumulator;
 };
@@ -144,9 +157,10 @@ ObjectWithArrayMethodsOptimized.prototype.build = function build(f, fThis){
 ObjectWithArrayMethodsOptimized.prototype.filter = function filter(f, fThis){
     var oThis=this._object;
     var acumulator = likeAr();
+    var i=0;
     for(var attr in oThis){ if(oThis.hasOwnProperty(attr)){
         var value = oThis[attr];
-        if(f.call(fThis, value, attr, oThis)){
+        if(f.call(fThis, value, attr, oThis, i++)){
             acumulator[attr] = value;
         }
     }}
