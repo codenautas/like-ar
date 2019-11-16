@@ -27,16 +27,33 @@ describe("array",function(){
     });
     it("creates from array of array", function(){
         var two={alfa:'beta'};
+        /** @type {[string, number|typeof two][]} */
         var pairs=[['one', 1], ['two', two]];
+        /** @type {{[key:string]:number|typeof two}} */
         var obtained=LikeAr.toPlainObject(pairs);
         expect(obtained).to.eql({one:1, two:two});
         expect(obtained.two).to.be(two);
     });
     it("creates from array of pairs with value", function(){
+        var one=new Date("2019-11-16");
         var two={alfa:'beta'};
-        var pairs=[{column:'one', value:1}, {column:'two', value:two}];
+        //** TODO quitar el elemento three para que deduzca sin 'three' */
+        /** @type {{column:string, value:string|Date|typeof two}[]} */
+        var pairs=[{column:'one', value:one}, {column:'two', value:two}, , {column:'three', value:'three'}];
+        /** @type {{[key:string]:string|Date|typeof two}} */
         var obtained=LikeAr.toPlainObject(pairs,"column");
-        expect(obtained).to.eql({one:1, two:two});
+        expect(obtained).to.eql({one:one, two:two, three:'three'});
+        expect(obtained.two).to.be(two);
+    });
+    it("creates from array of pairs with value2", function(){
+        var one=new Date("2019-11-16");
+        var two={alfa:'beta'};
+        //** TODO quitar el elemento three para que deduzca sin 'three' */
+        /** @type {{column:string, value2:string|Date|typeof two}[]} */
+        var pairs=[{column:'one', value2:one}, {column:'two', value2:two}, {column:'three', value2:'three'}];
+        /** @type {{[key:string]:string|Date|typeof two}} */
+        var obtained=LikeAr.toPlainObject(pairs,"column","value2");
+        expect(obtained).to.eql({one:one, two:two, three:'three'});
         expect(obtained.two).to.be(two);
     });
     it("creates an index object from array", function(){
@@ -76,34 +93,42 @@ describe("array",function(){
     {style:'nonOptimized'},
 ].forEach(function(style){
   describe(style.style, function(){
+    /** @type {typeof LikeAr} */
     var likear=style.fun||LikeAr[style.style];
     describe("object2Array", function(){
+        /** @type {{[key in 'a'|'b'|'c']:string}} */
         var algo;
         beforeEach(function(){
             algo={a:'7', b:'8', c:'9'};
         })
         it("array", function(){
+            /** @type {string[]} */
             var res = likear(algo).array();
             discrepances.showAndThrow(res,['7','8','9']);
         });
         it("array like old JS", function(){
             LikeAr.testingLikeOldJs=true;
+            /** @type {string[]} */
             var res = likear(algo).array();
             discrepances.showAndThrow(res,['7','8','9']);
             LikeAr.testingLikeOldJs=false;
         });
         it("keys", function(){
+            /** @type {('a'|'b'|'c')[]} */
             var res = likear(algo).keys();
             expect(res).to.eql(['a','b','c']);
         });
         it("forEach", function(){
+            /** @type {[string,'a'|'b'|'c',typeof algo, number][]} */
             var res=[];
-            likear(algo).forEach(function(valor, indice, contenedor, posicion){
+            /** @type {(valor:string, indice:'a'|'b'|'c', contenedor:typeof algo, posicion:number)=>void} */
+            var callback=function(valor, indice, contenedor, posicion){
                 res.push([valor, indice, contenedor, posicion]);
                 if(indice=='b'){
                     contenedor[indice]='x';
                 }
-            });
+            }
+            likear(algo).forEach(callback);
             expect(res).to.eql([
                 ['7', 'a', algo, 0],
                 ['8', 'b', algo, 1],
@@ -112,12 +137,15 @@ describe("array",function(){
             expect(algo).to.eql({a:'7', b:'x', c:'9'})
         });
         it("map", function(){
-            var res = likear(algo).map(function(valor, indice, contenedor, posicion){
+            /** @type {(valor:string, indice:'a'|'b'|'c', contenedor:typeof algo, posicion:number)=>[string,'a'|'b'|'c',typeof algo, number]} */
+            var callback=function(valor, indice, contenedor, posicion){
                 if(indice=='b'){
                     contenedor[indice]='y';
                 }
                 return [valor, indice, contenedor, posicion];
-            });
+            }                
+            /** @type {LikeAr.ObjectWithArrayFunctions<{[key in 'a'|'b'|'c']:[string,'a'|'b'|'c',typeof algo, number]}>} */
+            var res = likear(algo).map(callback);
             expect(res).to.eql({
                 a:['7', 'a', algo, 0],
                 b:['8', 'b', algo, 1],
@@ -126,8 +154,10 @@ describe("array",function(){
             expect(algo).to.eql({a:'7', b:'y', c:'9'})
         });
         it("filter and plain", function(){
+            /** @type {'a'|'b'|'c'|null} */
             var porPosicion=null;
-            var res = likear(algo).filter(function(valor, indice, contenedor, posicion){
+            /** @type {(_valor:string, indice:'a'|'b'|'c', contenedor:typeof algo, posicion:number)=>boolean} */
+            var callback=function(_valor, indice, contenedor, posicion){
                 if(indice=='b'){
                     contenedor[indice]='z';
                 }
@@ -135,13 +165,16 @@ describe("array",function(){
                     porPosicion=indice;
                 }
                 return indice!='c';
-            });
+            }
+            /** @type {likeAr.ObjectWithArrayFunctions<{[key in 'a'|'b'|'c']:string}>} */
+            var res = likear(algo).filter(callback);
             expect(res).to.eql({
                 a:'7',
                 b:'8',
             })
             expect(algo).to.eql({a:'7', b:'z', c:'9'})
             expect(porPosicion).to.eql('b');
+            /** @type {{[key in 'a'|'b'|'c']:string}} */
             var plain = res.plain();
             expect(plain).to.eql({
                 a:'7',
@@ -150,15 +183,18 @@ describe("array",function(){
             expect(plain.constructor).to.eql(Object);
         });
         it("join", function(){
+            /** @type {string} */
             var res = likear(algo).join('<>');
             expect(res).to.eql('7<>8<>9');
             expect(algo).to.eql({a:'7', b:'8', c:'9'});
         });
         it("keyCount", function(){
+            /** @type {number} */
             var res = likear(algo).keyCount();
             expect(res).to.eql(3);
         });
         it("chaining map filter map", function(){
+            /** @type {likeAr.ObjectWithArrayFunctions<typeof algo>} */
             var res = likear(algo)
             .map(function(valor, indice, contenedor){
                 if(indice=='c'){
@@ -182,33 +218,52 @@ describe("array",function(){
             expect(res.join()).to.eql('7!?,9!?');
         });
         it("map array into object", function(){
+            /** @type {likeAr.ObjectWithArrayFunctions<{[key in number]:{a:number}}>} */
+            var _testType = LikeAr([{a:11}, {a:12}, {a:14}]);
+            /** @type {likeAr.ObjectWithArrayFunctions<{[key in number]:number}>} */
             var result = LikeAr([{a:11}, {a:12}, {a:14}]).map(function(value){ return value.a*10; });
+            // @ts-ignores Solo estoy comprobando tipos de like-ar
             discrepances.showAndThrow(result, {0:110, 1:120, 2:140});
         });
         it("map array get pure array", function(){
+            /** @type {number[]} */
             var result = LikeAr([{a:11}, {a:12}, {a:14}]).map(function(value){ return value.a*10; }).array();
             discrepances.showAndThrow(result, [110, 120, 140]);
         });
         it("map array get pure array like OldJs", function(){
             LikeAr.testingLikeOldJs=true;
+            /** @type {number[]} */
             var result = LikeAr([{a:11}, {a:12}, {a:14}]).map(function(value){ return value.a*10; }).array();
             discrepances.showAndThrow(result, [110, 120, 140]);
             LikeAr.testingLikeOldJs=false;
         });
         it("build object", function(){
+            /** @type {likeAr.ObjectWithArrayFunctions<{[key:string]:string}>} */
             var result = LikeAr(algo).build(function(value, key){ return {['_'+key]:'"'+value+'"'}; });
             expect(result).to.eql({_a:'"7"', _b:'"8"', _c:'"9"'});
         });
         it("chained build object", function(){
-            var result = LikeAr(algo).filter(function(value){ 
-                return value !=7 
-            }).build(function(value, key){ 
-                return {['_'+key]:'"'+value+'"'}; 
-            });
+            /** @type {likeAr.ObjectWithArrayFunctions<{[key:string]:string}>} */
+            var result = LikeAr(algo).filter(
+                /** @type {(value:string|number)=>boolean} */
+                function(value){ 
+                    return value != 7 
+                }
+            ).build(
+                /** @type {(value:string|number, key:string)=>{[key:string]:string}} */
+                function(value, key){ 
+                    return {['_'+key]:'"'+value+'"'}; 
+                }
+            );
             expect(result).to.eql({_b:'"8"', _c:'"9"'});
         });
         it("build object from array", function(){
-            var result = LikeAr([{a:11}, {b:12}, {c:14}]).build(function(value){ return value; });
+            /** @type {{a?:number, b?:number, c?:number}[]} */
+            var array=[{a:11}, {b:12}, {c:14}];
+            /** @type {<T extends {}>(value:T)=>T} */
+            var callback=function(value){ return value; }
+            /** @type {likeAr.ObjectWithArrayFunctions<{a?:number, b?:number, c?:number}>} */
+            var result = LikeAr(array).build(callback);
             expect(result).to.eql({a:11, b:12, c:14});
         });
     });

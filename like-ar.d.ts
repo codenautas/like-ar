@@ -1,22 +1,24 @@
-declare module "like-ar"{
-    type ObjectWithArrayFunctions<T, K extends keyof any>={
-        forEach:   ( callback:(value:T, key?:K, original?:{[key in K]:T}, pos?:number)=>void   ) => ObjectWithArrayFunctions<T,K>
-        map    :<U>( callback:(value:T, key?:K, original?:{[key in K]:T}, pos?:number)=>U      ) => ObjectWithArrayFunctions<U,K>
-        filter :   ( callback:(value:T, key?:K, original?:{[key in K]:T}, pos?:number)=>boolean) => ObjectWithArrayFunctions<T,K>
-        build  :<U,K2 extends keyof {}>(callback:(value:T,key?:K,original?:{[key in K]:T},pos?:number)=>{[key in K2]:U}) => ObjectWithArrayFunctions<U,K2>
-        keys   :() => K[]
-        array  :() => T[]
-        plain  :() => {[key in K]:T}
-        join   :(separator:string) => string
+export as namespace likeAr;
+export = likeAr
+
+declare function likeAr<T>(o:{[K in keyof T]: T[K]}):T extends (infer U)[] ? likeAr.ObjectWithArrayFunctions<{[key in number]:U}> : likeAr.ObjectWithArrayFunctions<T>
+declare namespace likeAr{
+    export type ObjectWithArrayFunctions<T>={
+        forEach:   ( callback:(value:T[keyof T], key?:keyof T, original?:{[K in keyof T]:T[K]}, pos?:number)=>void   ) => ObjectWithArrayFunctions<T>
+        map    :<U>( callback:(value:T[keyof T], key?:keyof T, original?:{[K in keyof T]:T[K]}, pos?:number)=>U) => ObjectWithArrayFunctions<{[K in keyof T]:U}>
+        filter :   ( callback:(value:T[keyof T], key?:keyof T, original?:{[K in keyof T]:T[K]}, pos?:number)=>boolean) => ObjectWithArrayFunctions<T>
+        build  :<U>( callback:(value:T[keyof T], key?:keyof T, original?:{[K in keyof T]:T[K]}, pos?:number)=>{[K2 in keyof U]:U[K2]}) => ObjectWithArrayFunctions<U>
+        keys   :() => (keyof T)[]
+        array  :() => T[keyof T][]
+        plain  :() => T
+        join   :(separator?:string) => string
         keyCount:()=>number        
     }
-    function likeAr<T, K extends keyof any>(a:T[]):ObjectWithArrayFunctions<T, K>
-    function likeAr<T, K extends keyof any>(o:{[key in K]: T}):ObjectWithArrayFunctions<T, K>
-    namespace likeAr{
-        function toPlainObject<T>(array:[string, T][]):{[key:string]:T}
-        function toPlainObject<T, K extends keyof T>(array:T, keyName:K, valueName:K):{[key:string]:T[K]}
-        function toPlainObject<T, K extends keyof any>(arrayKeys:K[], arrayValues:T[]):{[key in K]:T}
-        function createIndex<T, K extends keyof T>(array:T[], keyName:K):{[key:string]:T}
-    }
-    export = likeAr
+    export function toPlainObject<T>(array:[string, T][]):{[key:string]:T}
+    export function toPlainObject<T, K extends keyof T>(array:T[], keyName:K, valueName?:K):{[key:string]:T[K]}
+    export function toPlainObject<T, K extends string, FutureKeys extends string>(array:({[key in K]:FutureKeys}&{value:T})[], keyName:K):{[key3 in FutureKeys]:T}
+    export function toPlainObject<T, K extends string, KV extends string|number>(array:({[key in K]:string}&{[key2 in KV]:T})[], keyName:K, valueName:KV):{[key3:string]:T}
+    export function toPlainObject<T, K extends keyof any>(arrayKeys:K[], arrayValues:T[]):{[key in K]:T}
+    export function createIndex<T, K extends keyof T>(array:T[], keyName:K):{[key:string]:T}
+    export var testingLikeOldJs:boolean
 }

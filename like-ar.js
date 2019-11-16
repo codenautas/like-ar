@@ -64,6 +64,7 @@ ObjectWithArrayMethodsOptimized.prototype.array = function array(){
     return arr;
 };
 
+/** @param {string|null|undefined} separator */
 ObjectWithArrayMethodsOptimized.prototype.join = function join(separator){
     return this.array().join(separator);
 };

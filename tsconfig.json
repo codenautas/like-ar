@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "checkJs": true,
+        "types": ["mocha"],
+        "typeRoots" : ["node_modules/@types", "node_modules/types.d.ts/modules"],
+        "strict": true,
+        "noImplicitAny": true
+    }
+}
