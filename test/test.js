@@ -1,13 +1,16 @@
 "use strict";
 
+// @ts-ignore
 var expect=require('expect.js')
 var discrepances = require('discrepances');
 
+// @ts-ignore
 var json4all=require('json4all')
 
 var LikeAr = require('../like-ar.js');
 
 describe("array",function(){
+    /** @type {string[]} */ 
     var algo;
     beforeEach(function(){
         algo=['7', '8', '9']
@@ -39,7 +42,7 @@ describe("array",function(){
         var two={alfa:'beta'};
         //** TODO quitar el elemento three para que deduzca sin 'three' */
         /** @type {{column:string, value:string|Date|typeof two}[]} */
-        var pairs=[{column:'one', value:one}, {column:'two', value:two}, , {column:'three', value:'three'}];
+        var pairs=[{column:'one', value:one}, {column:'two', value:two}, {column:'three', value:'three'}];
         /** @type {{[key:string]:string|Date|typeof two}} */
         var obtained=LikeAr.toPlainObject(pairs,"column");
         expect(obtained).to.eql({one:one, two:two, three:'three'});
@@ -87,11 +90,12 @@ describe("array",function(){
     })
 });
 
-
-[
+/** @type { {style:'Optimized'|'nonOptimized', fun?:typeof likeAr}[] }*/
+var optionsToTest=[
     {style:'Optimized',fun:LikeAr},
     {style:'nonOptimized'},
-].forEach(function(style){
+]
+optionsToTest.forEach(function(style){
   describe(style.style, function(){
     /** @type {typeof LikeAr} */
     var likear=style.fun||LikeAr[style.style];
@@ -137,14 +141,16 @@ describe("array",function(){
             expect(algo).to.eql({a:'7', b:'x', c:'9'})
         });
         it("map", function(){
-            /** @type {(valor:string, indice:'a'|'b'|'c', contenedor:typeof algo, posicion:number)=>[string,'a'|'b'|'c',typeof algo, number]} */
+            /** @typedef {'a'|'b'|'c'} AorBorC */
+            /** @type {(valor:string, indice:AorBorC, contenedor:typeof algo, posicion:number)=>[string,AorBorC,typeof algo, number]} */
             var callback=function(valor, indice, contenedor, posicion){
                 if(indice=='b'){
                     contenedor[indice]='y';
                 }
                 return [valor, indice, contenedor, posicion];
             }                
-            /** @type {LikeAr.ObjectWithArrayFunctions<{[key in 'a'|'b'|'c']:[string,'a'|'b'|'c',typeof algo, number]}>} */
+            /** @type {LikeAr.ObjectWithArrayFunctions<{[key in AorBorC]:[string,AorBorC,typeof algo, number]}>} */
+            /**TODO poder cambiar a: @type {LikeAr.ObjectWithArrayFunctions<{[key in AorBorC]:[string,key,typeof algo, number]}>} */
             var res = likear(algo).map(callback);
             expect(res).to.eql({
                 a:['7', 'a', algo, 0],
@@ -152,6 +158,30 @@ describe("array",function(){
                 c:['9', 'c', algo, 2],
             })
             expect(algo).to.eql({a:'7', b:'y', c:'9'})
+        });
+        it("map of mixed-types", function(){
+            var theDay=new Date("2019-11-19");
+            /** @typedef {'a'|'b'|'c'} AorBorC */
+            /** @typedef {{data:number}|{number:number,text:string}|Date} Combo */
+            /** @type {{[key in AorBorC]:Combo}} */
+            var otro={
+                a:{data:7},
+                b:{number:5, text:'text'},
+                c:theDay
+            }
+            /**TODO: tratar @type {((valor:{data:number}, indice:'a', contenedor:typeof otro, posicion:number)=>[{data:number},'a',typeof algo, number]) | ((valor:{number:number, text:string}, indice:'b', contenedor:typeof otro, posicion:number)=>[{number:number, text:string},'b',typeof algo, number]) | ((valor:Date, indice:'c', contenedor:typeof otro, posicion:number)=>[Date,'c',typeof algo, number])}  */
+            /** @type {(valor:Combo, indice:AorBorC, contenedor:typeof otro, posicion:number)=>[[Combo],AorBorC,typeof otro, number]}  */
+            var callback=function(valor, indice, contenedor, posicion){
+                return [[valor], indice, contenedor, posicion];
+            }                
+            /** @type {LikeAr.ObjectWithArrayFunctions<{[key in AorBorC]:[[Combo],AorBorC,typeof otro, number]}>} */
+            var res = likear(otro).map(callback);
+            expect(res).to.eql({
+                a:[[{data:7}]               , 'a', otro, 0],
+                b:[[{number:5, text:'text'}], 'b', otro, 1],
+                c:[[theDay]                 , 'c', otro, 2],
+            })
+            expect(algo).to.eql({a:'7', b:'8', c:'9'})
         });
         it("filter and plain", function(){
             /** @type {'a'|'b'|'c'|null} */
