@@ -1,7 +1,7 @@
 export as namespace likeAr;
 export = likeAr
 
-declare function likeAr<T>(o:{[K in keyof T]: T[K]}):T extends (infer U)[] ? likeAr.ObjectWithArrayFunctions<{[key in number]:U}> : likeAr.ObjectWithArrayFunctions<T>
+declare function likeAr<T>(o:T):T extends (infer U)[] ? likeAr.ObjectWithArrayFunctions<{[key in number]:U}> : likeAr.ObjectWithArrayFunctions<T>
 
 declare namespace likeAr{
     export type Mapper<T, U> = U extends {[K in keyof T]: infer W} ? 
@@ -11,7 +11,7 @@ declare namespace likeAr{
         forEach:   ( callback:(value:T[keyof T], key:keyof T, original:{[K in keyof T]:T[K]}, pos:number)=>void   ) => ObjectWithArrayFunctions<T>
         map    :<U>( callback:(value:T[keyof T], key:keyof T, original:{[K in keyof T]:T[K]}, pos:number)=>U) => ObjectWithArrayFunctions<{[K in keyof T]:U}>
         filter :   ( callback:(value:T[keyof T], key:keyof T, original:{[K in keyof T]:T[K]}, pos:number)=>boolean) => ObjectWithArrayFunctions<T>
-        build  :<U>( callback:(value:T[keyof T], key:keyof T, original:{[K in keyof T]:T[K]}, pos:number)=>{[K2 in keyof U]:U[K2]}) => ObjectWithArrayFunctions<U>
+        build  :<U>( callback:(value:T[keyof T], key:keyof T, original:{[K in keyof T]:T[K]}, pos:number)=>{[K2 in keyof U]:U[K2]}) => ObjectWithArrayFunctions<{[K2 in keyof U]:U[K2]}>
         keys   :() => (keyof T)[]
         array  :() => T[keyof T][]
         plain  :() => T
