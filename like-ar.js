@@ -44,6 +44,15 @@ likeAr = function object2Array(o){
     return new ObjectWithArrayMethodsOptimized(o);
 };
 
+function LikeArStrict(o){
+    Object.defineProperty(this, '_object', { value: o})
+}
+
+likeAr.strict=function likeAr(o){
+    return new LikeArStrict(o);
+}
+likeAr.LikeAr=likeAr.strict;
+
 likeAr.nonOptimized = function object2Array(o){
     return new ObjectWithArrayMethodsNonOptimized(o);
 };
@@ -51,6 +60,8 @@ likeAr.nonOptimized = function object2Array(o){
 ObjectWithArrayMethodsOptimized.prototype.keys = function keys(){
     return Object.keys(this._object);
 };
+
+LikeArStrict.prototype.keys=ObjectWithArrayMethodsOptimized.prototype.keys;
 
 ObjectWithArrayMethodsOptimized.prototype.array = function array(){
     var oThis=this._object;
@@ -63,11 +74,13 @@ ObjectWithArrayMethodsOptimized.prototype.array = function array(){
     }}
     return arr;
 };
+LikeArStrict.prototype.array=ObjectWithArrayMethodsOptimized.prototype.array;
 
 /** @param {string|null|undefined} separator */
 ObjectWithArrayMethodsOptimized.prototype.join = function join(separator){
     return this.array().join(separator);
 };
+LikeArStrict.prototype.join=ObjectWithArrayMethodsOptimized.prototype.join;
 
 /*
 function ArrayAndKeys2Object(result, keys){ 
@@ -86,6 +99,9 @@ ObjectWithArrayMethodsOptimized.prototype.plain = function plain(){
     });
     return o;
 }
+LikeArStrict.prototype.plain = function plain(){
+    return this._object;
+}
 
 ObjectWithArrayMethodsOptimized.prototype.build = function build(f, fThis){
     var oThis=this._object;
@@ -100,6 +116,22 @@ ObjectWithArrayMethodsOptimized.prototype.build = function build(f, fThis){
     }}
     return acumulator;
 };
+LikeArStrict.prototype.buildPlain = function buildPlain(f, fThis){
+    var oThis=this._object;
+    var acumulator = {};
+    var i=0;
+    for(var attr in oThis){ if(oThis.hasOwnProperty(attr)){
+        var result = f.call(fThis, oThis[attr], attr, oThis, i++);
+        // eslint-disable-next-line guard-for-in
+        for(var attrResult in result){
+            acumulator[attrResult]=result[attrResult];
+        }
+    }}
+    return acumulator;
+};
+LikeArStrict.prototype.build = function build(f, fThis){
+    return likeAr.strict(this.buildPlain(f, fThis));
+};
 
 ObjectWithArrayMethodsOptimized.prototype.keyCount = function keyCount(){
     var oThis=this._object;
@@ -109,6 +141,7 @@ ObjectWithArrayMethodsOptimized.prototype.keyCount = function keyCount(){
     }}
     return i;
 };
+LikeArStrict.prototype.keyCount = ObjectWithArrayMethodsOptimized.prototype.keyCount;
 
 function Argument3Adapt(__,___,x){ return x; }
 
@@ -144,6 +177,7 @@ ObjectWithArrayMethodsOptimized.prototype.forEach = function forEach(f, fThis){
         f.call(fThis, oThis[attr], attr, oThis, i++);
     }}
 };
+LikeArStrict.prototype.forEach = ObjectWithArrayMethodsOptimized.prototype.forEach;
 
 ObjectWithArrayMethodsOptimized.prototype.map = function map(f, fThis){
     var oThis=this._object;
@@ -153,6 +187,15 @@ ObjectWithArrayMethodsOptimized.prototype.map = function map(f, fThis){
         acumulator[attr] = f.call(fThis, oThis[attr], attr, oThis, i++);
     }}
     return acumulator;
+};
+LikeArStrict.prototype.map = function map(f, fThis){
+    var oThis=this._object;
+    var acumulator = {};
+    var i=0;
+    for(var attr in oThis){ if(oThis.hasOwnProperty(attr)){
+        acumulator[attr] = f.call(fThis, oThis[attr], attr, oThis, i++);
+    }}
+    return likeAr.strict(acumulator);
 };
 
 ObjectWithArrayMethodsOptimized.prototype.filter = function filter(f, fThis){
@@ -166,6 +209,29 @@ ObjectWithArrayMethodsOptimized.prototype.filter = function filter(f, fThis){
         }
     }}
     return acumulator;
+};
+LikeArStrict.prototype.filter = function filter(f, fThis){
+    var oThis=this._object;
+    var acumulator = {};
+    var i=0;
+    for(var attr in oThis){ if(oThis.hasOwnProperty(attr)){
+        var value = oThis[attr];
+        if(f.call(fThis, value, attr, oThis, i++)){
+            acumulator[attr] = value;
+        }
+    }}
+    return likeAr.strict(acumulator);
+};
+LikeArStrict.prototype.find = function filter(f, fThis){
+    var oThis=this._object;
+    var i=0;
+    for(var attr in oThis){ if(oThis.hasOwnProperty(attr)){
+        var value = oThis[attr];
+        if(f.call(fThis, value, attr, oThis, i++)){
+            return oThis[attr];
+        }
+    }}
+    return null;
 };
 
 likeAr.toPlainObject = function toPlainObject(pairsOrArrayOfKeys, keyNameOrArrayOfValues, valueName){
@@ -192,6 +258,8 @@ likeAr.toPlainObject = function toPlainObject(pairsOrArrayOfKeys, keyNameOrArray
     }
     return o;
 };
+likeAr.strict.toPlainObject = likeAr.toPlainObject;
+
 
 likeAr.createIndex = function createIndex(array, keyname){
     var o={};
@@ -202,6 +270,7 @@ likeAr.createIndex = function createIndex(array, keyname){
     });
     return o;
 };
+likeAr.strict.createIndex = likeAr.createIndex;
 
 return likeAr;
 

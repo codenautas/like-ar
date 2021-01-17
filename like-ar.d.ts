@@ -27,4 +27,6 @@ declare namespace likeAr{
     export var testingLikeOldJs:boolean
     export const Optimized:typeof likeAr
     export const nonOptimized:typeof likeAr
+    export const strict:typeof likeAr
+    export const LikeAr:typeof likeAr
 }
