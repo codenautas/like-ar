@@ -11,8 +11,8 @@ declare namespace likeAr{
         forEach:   ( callback:(value:T[keyof T], key:keyof T, original:{[K in keyof T]:T[K]}, pos:number)=>void   ) => ObjectWithArrayFunctions<T>
         map    :<U>( callback:(value:T[keyof T], key:keyof T, original:{[K in keyof T]:T[K]}, pos:number)=>U) => ObjectWithArrayFunctions<{[K in keyof T]:U}>
         filter :   ( callback:(value:T[keyof T], key:keyof T, original:{[K in keyof T]:T[K]}, pos:number)=>boolean) => ObjectWithArrayFunctions<T>
-        find   :   ( callback:(value:T[keyof T], key:keyof T, original:{[K in keyof T]:T[K]}, pos:number)=>boolean) => T[keyof T]
-        findKey:   ( callback:(value:T[keyof T], key:keyof T, original:{[K in keyof T]:T[K]}, pos:number)=>boolean) => keyof T
+        find   :   ( callback:(value:T[keyof T], key:keyof T, original:{[K in keyof T]:T[K]}, pos:number)=>boolean) => T[keyof T]|undefined
+        findKey:   ( callback:(value:T[keyof T], key:keyof T, original:{[K in keyof T]:T[K]}, pos:number)=>boolean) => keyof T|undefined
         build  :<U>( callback:(value:T[keyof T], key:keyof T, original:{[K in keyof T]:T[K]}, pos:number)=>{[K2 in keyof U]:U[K2]}) => ObjectWithArrayFunctions<{[K2 in keyof U]:U[K2]}>
         keys   :() => (keyof T)[]
         array  :() => T[keyof T][]
