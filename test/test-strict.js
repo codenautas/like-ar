@@ -309,6 +309,11 @@ describe("strict object", function(){
             expect(res==algo.x2).to.be.ok();
             expect(x1).to.eql(2);
             expect(x3).to.eql(11);
+            var idx = likear(algo).findKey(function(value, key, object){
+                expect(object==algo).to.be.ok();
+                return value.a=='yes';
+            })
+            expect(idx=='x2').to.be.ok();
         })
         it("find and not found", function(){
             var algo = {
@@ -321,6 +326,11 @@ describe("strict object", function(){
                 return value.a=='may be'
             })
             expect(res==null).to.be.ok();
+            var key = likear(algo).findKey(function(value, key, object){
+                expect(object==algo).to.be.ok();
+                return value.a=='may be'
+            })
+            expect(key===undefined).to.be.ok();
         })
     });
 });

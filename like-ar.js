@@ -222,7 +222,7 @@ LikeArStrict.prototype.filter = function filter(f, fThis){
     }}
     return likeAr.strict(acumulator);
 };
-LikeArStrict.prototype.find = function filter(f, fThis){
+LikeArStrict.prototype.find = function find(f, fThis){
     var oThis=this._object;
     var i=0;
     for(var attr in oThis){ if(oThis.hasOwnProperty(attr)){
@@ -231,7 +231,18 @@ LikeArStrict.prototype.find = function filter(f, fThis){
             return oThis[attr];
         }
     }}
-    return null;
+    return undefined;
+};
+LikeArStrict.prototype.findKey = function findKey(f, fThis){
+    var oThis=this._object;
+    var i=0;
+    for(var attr in oThis){ if(oThis.hasOwnProperty(attr)){
+        var value = oThis[attr];
+        if(f.call(fThis, value, attr, oThis, i++)){
+            return attr;
+        }
+    }}
+    return undefined;
 };
 
 likeAr.toPlainObject = function toPlainObject(pairsOrArrayOfKeys, keyNameOrArrayOfValues, valueName){
