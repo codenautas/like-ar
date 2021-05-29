@@ -29,6 +29,7 @@ declare namespace likeAr{
     export var testingLikeOldJs:boolean
     export const Optimized:typeof likeAr
     export const nonOptimized:typeof likeAr
-    export const strict:typeof likeAr
-    export const LikeAr:typeof likeAr
+    export function strict<T>(o:T):likeAr.ObjectWithArrayFunctions<T>
+    export function beingArray<T>(o:T[]):likeAr.ObjectWithArrayFunctions<{[key in number]:T}>
+    export const LikeAr:typeof strict
 }

@@ -52,6 +52,7 @@ likeAr.strict=function likeAr(o){
     return new LikeArStrict(o);
 }
 likeAr.LikeAr=likeAr.strict;
+likeAr.beingArray = likeAr.strict;
 
 likeAr.nonOptimized = function object2Array(o){
     return new ObjectWithArrayMethodsNonOptimized(o);

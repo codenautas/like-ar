@@ -8,6 +8,7 @@ var discrepances = require('discrepances');
 var json4all=require('json4all')
 
 var LikeAr = require('../like-ar.js').strict;
+const beingArray = require('../like-ar.js').beingArray;
 
 describe("strict array",function(){
     /** @type {string[]} */ 
@@ -247,9 +248,9 @@ describe("strict object", function(){
         });
         it("map array into object", function(){
             /** @type {likeAr.ObjectWithArrayFunctions<{[key in number]:{a:number}}>} */
-            var _testType = LikeAr([{a:11}, {a:12}, {a:14}]);
+            var _testType = beingArray([{a:11}, {a:12}, {a:14}]);
             /** @type {likeAr.ObjectWithArrayFunctions<{[key in number]:number}>} */
-            var result = LikeAr([{a:11}, {a:12}, {a:14}]).map(function(value){ return value.a*10; }).plain();
+            var result = beingArray([{a:11}, {a:12}, {a:14}]).map(function(value){ return value.a*10; }).plain();
             // @ts-ignores Solo estoy comprobando tipos de like-ar
             discrepances.showAndThrow(result, {0:110, 1:120, 2:140});
         });
