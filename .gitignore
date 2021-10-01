@@ -35,6 +35,5 @@ node_modules
 # Local configs
 local-*
 *-local.*
-package-lock.json
 
 .nyc_output

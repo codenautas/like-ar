@@ -333,5 +333,11 @@ describe("strict object", function(){
             })
             expect(key===undefined).to.be.ok();
         })
+        it("maps from undefined values", function(){
+            var otro = {a:undefined, b:1, c:'A'};
+            var expected = {a:"undefined", b:"number", c:"string"};
+            var res = likear(otro).map(x=>typeof x).plain();
+            expect(res).to.eql(expected)
+        })
     });
 });

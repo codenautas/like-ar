@@ -1,7 +1,7 @@
 {
   "name": "like-ar",
   "description": "Using objects like arrays with map, filter, forEach and others coming soon.",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "author": "Codenautas <codenautas@googlegroups.com>",
   "repository": "codenautas/like-ar",
   "license": "MIT",
@@ -12,12 +12,12 @@
     "like-ar.d.ts"
   ],
   "devDependencies": {
-    "@types/mocha": "~8.2.2",
+    "@types/mocha": "~9.0.0",
     "discrepances": "0.2.6",
     "expect.js": "~0.3.1",
     "istanbul": "~0.4.5",
     "json4all": "~1.1.0",
-    "mocha": "~8.4.0",
+    "mocha": "~9.1.2",
     "nyc": "~15.1.0"
   },
   "engines": {
