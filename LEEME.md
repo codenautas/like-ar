@@ -34,7 +34,7 @@ $ npm install like-ar
 <!--lang:es-->
 # Uso
 
-La función `likeAr` envuelve un objeto de modo que puedan usarse un
+La función `LikeAr` envuelve un objeto de modo que puedan usarse un
 conjunto conocido de funciones diseñadas para correr sobre arreglos: 
 `forEach`, `map`, `filter` y `join`. Similarmente a lo que ocurre con arreglos 
 estas funciones reciben una función que se ejecuta para cada elemento del objeto,
@@ -43,14 +43,14 @@ esa función recibe el valor, la clave y el objeto original.
 <!--lang:en--]
 # Usage
 
-The function `likeAr` wraps an object. The wraped object can be used like an array 
+The function `LikeAr` wraps an object. The wraped object can be used like an array 
 with some array functions: `forEach`, `map`, `filter` y `join`. 
 
 These functions receive a callback in the same way that the array version does. 
 
 [!--lang:*-->
-```sh
-var likeAr = require('like-ar');
+```js
+var {LikeAr} = require('like-ar');
 
 var object={
     lastName:'Perez',
@@ -58,17 +58,27 @@ var object={
     phone:'+45-11-2222-3333'
 }
 
-likeAr(object).forEach(function(value, attrName, object, position){
+LikeAr(object).forEach(function(value, attrName, object, position){
     console.log(position+'.',attrName,':',value);
 });
 
 console.log(
-    likeAr(object).filter(function(value, attrName){
+    LikeAr(object).filter(function(value, attrName){
         return attrName.contains('Name');
     }).map(function(value,attrName){
         return attrName+':'+value
     }).join(', ')
 );
+
+var objectUpperCase=LikeAr(object).map(v=>v.toUpperCase());
+
+/* objectUpperCase = 
+var object={
+    lastName:'PEREZ',
+    firstName:'DIEGO',
+    phone:'+45-11-2222-3333'
+}
+*/
 
 ```
 
@@ -103,12 +113,12 @@ function            | returned value
 `join(separator)`   | string with the join of the values
 `array()`           | array of values
 `keys()`            | array of keys
-`plain()`           | plain object without likeAr functions
+`plain()`           | plain object without LikeAr functions
 
 
 [!--lang:*-->
 
-## likeAr(object).build(cb(value, key))
+## LikeAr(object).build(cb(value, key))
 <!--lang:es-->
 Construye un objeto nuevo con las claves cambiadas. 
 La función `cb` debe devolver el elemento como un objeto de un solo campo `{k: v}` que se usará para componer el resultado final. 
@@ -122,18 +132,18 @@ The callback function must return a `{key: value}` object to compose the final r
 ```ts
 var pairs=[{field:'lastName', value:'Perez'}, {field:'firstName', value:'Diego'}];
 
-console.log(likeAr(pairs).build(funciton(pair){ return {[pair.field]: pair.value}; ));
+console.log(LikeAr(pairs).build(funciton(pair){ return {[pair.field]: pair.value}; ));
 // {lastName: "Perez", firstName: "Diego"}
 
 var toJoin=[{lastName:'Perez'}, {firstName:'Diego'}];
 
-console.log(likeAr(toJoin).build(funciton(objectWithOneKey){ return objectWithOneKey; ));
+console.log(LikeAr(toJoin).build(funciton(objectWithOneKey){ return objectWithOneKey; ));
 // {lastName: "Perez", firstName: "Diego"}
 
 ```
 
-## likeAr.toPlainObject(array [,keyName [,valueName]])
-## likeAr.toPlainObject(arrayOfKeys, arrayOfValues)
+## LikeAr.toPlainObject(array [,keyName [,valueName]])
+## LikeAr.toPlainObject(arrayOfKeys, arrayOfValues)
 
 <!--lang:es-->
 Construye un objeto común (no encadenable) a partir de un arreglo de pares (o de un par de arreglos) de claves y valores. 
@@ -150,19 +160,19 @@ Default values: `0` and `1` if `keyName` is not set. `"value"` for `valueName` i
 [!--lang:*-->
 # Usage
 
-```sh
-var likeAr = require('like-ar');
+```ts
+var {LikeAr} = require('like-ar');
 
 var pairs=[['lastName', 'Perez'], ['firstName', 'Diego']];
 
-console.log(likeAr.toPlainObject(pairs));
+console.log(LikeAr.toPlainObject(pairs));
 
 var pairs=[{field:'lastName', value:'Perez'}, {field:'firstName', value:'Diego'}];
 
-console.log(likeAr.toPlainObject(pairs, 'field'));
+console.log(LikeAr.toPlainObject(pairs, 'field'));
 ```
 
-## likeAr.createIndex(array:T[],keyName:string):{[k:string]: T}
+## LikeAr.createIndex(array:T[],keyName:string):{[k:string]: T}
 
 <!--lang:es-->
 Construye un objeto común que será índice de los elementos de un arreglo existente. 
@@ -174,12 +184,12 @@ Returns a plain object containing the same element indexed by keyName
 [!--lang:*-->
 # Usage
 
-```sh
-var likeAr = require('like-ar');
+```ts
+var {LikeAr} = require('like-ar');
 
 var persons=[{name:'Diego', lastName:'Rivera', age:30}, {name:'Frida', lastName:'Kahlo'}];
 
-var idxPersons=likeAr.createIndex(persons, 'lastName');
+var idxPersons=LikeAr.createIndex(persons, 'lastName');
 
 idxPersons.Kahlo.age=20;
 

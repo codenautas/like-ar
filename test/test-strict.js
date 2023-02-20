@@ -7,8 +7,8 @@ var discrepances = require('discrepances');
 // @ts-ignore
 var json4all=require('json4all')
 
-var LikeAr = require('../like-ar.js').strict;
-const beingArray = require('../like-ar.js').beingArray;
+// var LikeAr = require('../like-ar.js').strict;
+const {LikeAr, beingArray} = require('../like-ar.js');
 
 describe("strict array",function(){
     /** @type {string[]} */ 
@@ -66,6 +66,13 @@ describe("strict array",function(){
         var obtained=LikeAr.createIndex(pairs,"column");
         expect(obtained).to.eql({one:{column:'one', value:1}, two:{column:'two', value:two}});
         expect(obtained.two).to.eql(pairs[1]);
+    });
+    it("creates a composed index object from array", function(){
+        var two={alfa:'beta'};
+        var pairs=[{key1:'one', key2:2, value:1}, {key1:'two', key2:22, value:two}];
+        var obtained=LikeAr.createIndex(pairs,["key1", "key2"]);
+        expect(obtained).to.eql({'["one",2]':{key1:'one', key2:2, value:1}, '["two",22]':{key1:'two', key2:22, value:two}});
+        expect(obtained['["two",22]']).to.eql(pairs[1]);
     });
     it("creates from array of pairs", function(){
         var two={alfa:'beta'};
@@ -145,8 +152,8 @@ describe("strict object", function(){
                 }
                 return [valor, indice, contenedor, posicion];
             }                
-            /** @type {LikeAr.ObjectWithArrayFunctions<{[key in AorBorC]:[string,AorBorC,typeof algo, number]}>} */
-            /**TODO poder cambiar a: @type {LikeAr.ObjectWithArrayFunctions<{[key in AorBorC]:[string,key,typeof algo, number]}>} */
+            /** @type {likeAr.ObjectWithArrayFunctions<{[key in AorBorC]:[string,AorBorC,typeof algo, number]}>} */
+            /**TODO poder cambiar a: @type {likeAr.ObjectWithArrayFunctions<{[key in AorBorC]:[string,key,typeof algo, number]}>} */
             var prevRes = likear(algo).map(callback);
             expect(prevRes).to.eql({});
             var res = prevRes.plain();
@@ -172,7 +179,7 @@ describe("strict object", function(){
             var callback=function(valor, indice, contenedor, posicion){
                 return [[valor], indice, contenedor, posicion];
             }                
-            /** @type {LikeAr.ObjectWithArrayFunctions<{[key in AorBorC]:[[Combo],AorBorC,typeof otro, number]}>} */
+            /** @type {likeAr.ObjectWithArrayFunctions<{[key in AorBorC]:[[Combo],AorBorC,typeof otro, number]}>} */
             var prevRes = likear(otro).map(callback);
             expect(prevRes).to.eql({});
             var res = prevRes.plain();
@@ -249,30 +256,29 @@ describe("strict object", function(){
         it("map array into object", function(){
             /** @type {likeAr.ObjectWithArrayFunctions<{[key in number]:{a:number}}>} */
             var _testType = beingArray([{a:11}, {a:12}, {a:14}]);
-            /** @type {likeAr.ObjectWithArrayFunctions<{[key in number]:number}>} */
+            /** @type {{[key in number]:number}} */
             var result = beingArray([{a:11}, {a:12}, {a:14}]).map(function(value){ return value.a*10; }).plain();
-            // @ts-ignores Solo estoy comprobando tipos de like-ar
             discrepances.showAndThrow(result, {0:110, 1:120, 2:140});
         });
         it("map array get pure array", function(){
             /** @type {number[]} */
-            var result = LikeAr([{a:11}, {a:12}, {a:14}]).map(function(value){ return value.a*10; }).array();
+            var result = beingArray([{a:11}, {a:12}, {a:14}]).map(function(value){ return value.a*10; }).array();
             discrepances.showAndThrow(result, [110, 120, 140]);
         });
         it("map array get pure array like OldJs", function(){
             LikeAr.testingLikeOldJs=true;
             /** @type {number[]} */
-            var result = LikeAr([{a:11}, {a:12}, {a:14}]).map(function(value){ return value.a*10; }).array();
+            var result = beingArray([{a:11}, {a:12}, {a:14}]).map(function(value){ return value.a*10; }).array();
             discrepances.showAndThrow(result, [110, 120, 140]);
             LikeAr.testingLikeOldJs=false;
         });
         it("build object", function(){
-            /** @type {likeAr.ObjectWithArrayFunctions<{[key:string]:string}>} */
+            /** @type {{[key:string]:string}} */
             var result = LikeAr(algo).build(function(value, key){ return {['_'+key]:'"'+value+'"'}; }).plain();
             expect(result).to.eql({_a:'"7"', _b:'"8"', _c:'"9"'});
         });
         it("chained build object", function(){
-            /** @type {likeAr.ObjectWithArrayFunctions<{[key:string]:string}>} */
+            /** @type {{[key:string]:string}} */
             var result = LikeAr(algo).filter(
                 /** @type {(value:string|number)=>boolean} */
                 function(value){ 
@@ -291,8 +297,8 @@ describe("strict object", function(){
             var array=[{a:11}, {b:12}, {c:14}];
             /** @type {<T extends {}>(value:T)=>T} */
             var callback=function(value){ return value; }
-            /** @type {likeAr.ObjectWithArrayFunctions<{a?:number, b?:number, c?:number}>} */
-            var result = LikeAr(array).build(callback).plain();
+            /** @type {{a?:number, b?:number, c?:number}} */
+            var result = beingArray(array).build(callback).plain();
             expect(result).to.eql({a:11, b:12, c:14});
         });
         it("find and found", function(){

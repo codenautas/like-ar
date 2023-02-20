@@ -4,6 +4,7 @@
         "checkJs": true,
         "types": ["mocha"],
         "typeRoots" : ["node_modules/@types", "node_modules/types.d.ts/modules"],
+        "lib": ["ES2015"],
         "strict": true,
         "noImplicitAny": true
     }

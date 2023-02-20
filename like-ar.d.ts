@@ -25,11 +25,12 @@ declare namespace likeAr{
     export function toPlainObject<T, K extends string, FutureKeys extends string>(array:({[key in K]:FutureKeys}&{value:T})[], keyName:K):{[key3 in FutureKeys]:T}
     export function toPlainObject<T, K extends string, KV extends string|number>(array:({[key in K]:string}&{[key2 in KV]:T})[], keyName:K, valueName:KV):{[key3:string]:T}
     export function toPlainObject<T, K extends keyof any>(arrayKeys:K[], arrayValues:T[]):{[key in K]:T}
-    export function createIndex<T, K extends keyof T>(array:T[], keyName:K):{[key:string]:T}
+    export function createIndex<T, K extends keyof T>(array:T[], keyName:K|K[]):{[key:string]:T}
     export var testingLikeOldJs:boolean
     export const Optimized:typeof likeAr
     export const nonOptimized:typeof likeAr
     export function strict<T>(o:T):likeAr.ObjectWithArrayFunctions<T>
     export function beingArray<T>(o:T[]):likeAr.ObjectWithArrayFunctions<{[key in number]:T}>
-    export const LikeAr:typeof strict
+    export const LikeAr:typeof strict & typeof likeAr
 }
+

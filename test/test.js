@@ -66,6 +66,13 @@ describe("array",function(){
         expect(obtained).to.eql({one:{column:'one', value:1}, two:{column:'two', value:two}});
         expect(obtained.two).to.eql(pairs[1]);
     });
+    it("creates a composed index object from array", function(){
+        var two={alfa:'beta'};
+        var pairs=[{key1:'one', key2:2, value:1}, {key1:'two', key2:22, value:two}];
+        var obtained=LikeAr.createIndex(pairs,["key1", "key2"]);
+        expect(obtained).to.eql({'["one",2]':{key1:'one', key2:2, value:1}, '["two",22]':{key1:'two', key2:22, value:two}});
+        expect(obtained['["two",22]']).to.eql(pairs[1]);
+    });
     it("creates from array of pairs", function(){
         var two={alfa:'beta'};
         var pairs=[{c:'one', v:1}, {c:'two', v:two}];

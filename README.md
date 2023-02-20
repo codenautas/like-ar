@@ -22,13 +22,13 @@ $ npm install like-ar
 
 # Usage
 
-The function `likeAr` wraps an object. The wraped object can be used like an array
+The function `LikeAr` wraps an object. The wraped object can be used like an array
 with some array functions: `forEach`, `map`, `filter` y `join`.
 
 These functions receive a callback in the same way that the array version does.
 
-```sh
-var likeAr = require('like-ar');
+```js
+var {LikeAr} = require('like-ar');
 
 var object={
     lastName:'Perez',
@@ -36,24 +36,34 @@ var object={
     phone:'+45-11-2222-3333'
 }
 
-likeAr(object).forEach(function(value, attrName, object){
-    console.log(attrName,':',value);
+LikeAr(object).forEach(function(value, attrName, object, position){
+    console.log(position+'.',attrName,':',value);
 });
 
 console.log(
-    likeAr(object).filter(function(value, attrName){
+    LikeAr(object).filter(function(value, attrName){
         return attrName.contains('Name');
     }).map(function(value,attrName){
         return attrName+':'+value
     }).join(', ')
 );
 
+var objectUpperCase=LikeAr(object).map(v=>v.toUpperCase());
+
+/* objectUpperCase =
+var object={
+    lastName:'PEREZ',
+    firstName:'DIEGO',
+    phone:'+45-11-2222-3333'
+}
+*/
+
 ```
 
 # API
 
 ## likeAr(object)
-The callback functions receive these parameters: `value`, `key` and the original object.
+The callback functions receive these parameters: `value`, `key`, the `original` object and the `position` (starting by 0).
 The functions that in the Array case returns Arrays returns a chainable object.
 
 function            | returned value
@@ -64,10 +74,11 @@ function            | returned value
 `join(separator)`   | string with the join of the values
 `array()`           | array of values
 `keys()`            | array of keys
-`plain()`           | plain object without likeAr functions
+`plain()`           | plain object without LikeAr functions
 
 
-## likeAr(object).build(cb(value, key))
+
+## LikeAr(object).build(cb(value, key))
 Builds a new object with new keys.
 
 The callback function must return a `{key: value}` object to compose the final result.
@@ -75,18 +86,18 @@ The callback function must return a `{key: value}` object to compose the final r
 ```ts
 var pairs=[{field:'lastName', value:'Perez'}, {field:'firstName', value:'Diego'}];
 
-console.log(likeAr(pairs).build(funciton(pair){ return {[pair.field]: pair.value}; ));
+console.log(LikeAr(pairs).build(funciton(pair){ return {[pair.field]: pair.value}; ));
 // {lastName: "Perez", firstName: "Diego"}
 
 var toJoin=[{lastName:'Perez'}, {firstName:'Diego'}];
 
-console.log(likeAr(toJoin).build(funciton(objectWithOneKey){ return objectWithOneKey; ));
+console.log(LikeAr(toJoin).build(funciton(objectWithOneKey){ return objectWithOneKey; ));
 // {lastName: "Perez", firstName: "Diego"}
 
 ```
 
-## likeAr.toPlainObject(array [,keyName [,valueName]])
-## likeAr.toPlainObject(arrayOfKeys, arrayOfValues)
+## LikeAr.toPlainObject(array [,keyName [,valueName]])
+## LikeAr.toPlainObject(arrayOfKeys, arrayOfValues)
 
 Returns a plain object from an array of pairs (or a pair of arrays) of key/values.
 
@@ -94,30 +105,30 @@ Default values: `0` and `1` if `keyName` is not set. `"value"` for `valueName` i
 
 # Usage
 
-```sh
-var likeAr = require('like-ar');
+```ts
+var {LikeAr} = require('like-ar');
 
 var pairs=[['lastName', 'Perez'], ['firstName', 'Diego']];
 
-console.log(likeAr.toPlainObject(pairs));
+console.log(LikeAr.toPlainObject(pairs));
 
 var pairs=[{field:'lastName', value:'Perez'}, {field:'firstName', value:'Diego'}];
 
-console.log(likeAr.toPlainObject(pairs, 'field'));
+console.log(LikeAr.toPlainObject(pairs, 'field'));
 ```
 
-## likeAr.createIndex(array:T[],keyName:string):{[k:string]: T}
+## LikeAr.createIndex(array:T[],keyName:string):{[k:string]: T}
 
 Returns a plain object containing the same element indexed by keyName
 
 # Usage
 
-```sh
-var likeAr = require('like-ar');
+```ts
+var {LikeAr} = require('like-ar');
 
 var persons=[{name:'Diego', lastName:'Rivera', age:30}, {name:'Frida', lastName:'Kahlo'}];
 
-var idxPersons=likeAr.createIndex(persons, 'lastName');
+var idxPersons=LikeAr.createIndex(persons, 'lastName');
 
 idxPersons.Kahlo.age=20;
 
