@@ -8,7 +8,7 @@ var discrepances = require('discrepances');
 var json4all=require('json4all')
 
 // var LikeAr = require('../like-ar.js').strict;
-const {LikeAr, beingArray} = require('../like-ar.js');
+const {LikeAr, beingArray, iterator, empty} = require('../like-ar.js');
 
 describe("strict array",function(){
     /** @type {string[]} */ 
@@ -272,6 +272,46 @@ describe("strict object", function(){
             discrepances.showAndThrow(result, [110, 120, 140]);
             LikeAr.testingLikeOldJs=false;
         });
+        it("iterator of an Array returns the same array", function(){
+            var arr = ["a",33,false]
+            var result = iterator(arr);
+            discrepances.showAndThrow(result, arr);
+        });
+        it("iterator understands objects", function(){
+            var obj = {"11":"a11", "12": 12, "14":false, "Z":{blah:2}}
+            var result = iterator(obj);
+            discrepances.showAndThrow(result, ["a11", 12, false, obj.Z]);
+        });
+        it("detects undefined as empty", function(){
+            /** @type {true} */
+            var result = empty(undefined)
+            discrepances.showAndThrow(result, true);
+        })
+        it("detects null as empty", function(){
+            /** @type {true} */
+            var result = empty(null)
+            discrepances.showAndThrow(result, true);
+        })
+        it("detects empty array", function(){
+            /** @type {true} */
+            var result = empty([])
+            discrepances.showAndThrow(result, true);
+        })
+        it("detects non empty array", function(){
+            var result = empty([null])
+            discrepances.showAndThrow(result, false);
+        })
+        it("detects empty object", function(){
+            /** @type {true} */
+            var result = empty({})
+            discrepances.showAndThrow(result, true);
+        })
+        it("detects non empty object", function(){
+            /** @type {true} */
+            // @ts-expect-error is boolean and may be not true
+            var result = empty({a:"x", b:"j"})
+            discrepances.showAndThrow(result, false);
+        })
         it("build object", function(){
             /** @type {{[key:string]:string}} */
             var result = LikeAr(algo).build(function(value, key){ return {['_'+key]:'"'+value+'"'}; }).plain();

@@ -296,6 +296,24 @@ likeAr.createIndex = function createIndex(array, keyname){
 };
 likeAr.strict.createIndex = likeAr.createIndex;
 
+/** @param {any[]|Record<any,any>} o  */
+likeAr.iterator = function iterator(o){
+    if (o instanceof Array) return o;
+    return Object.values(o);
+}
+likeAr.strict.iterator = likeAr.iterator;
+
+/** @param {null|undefined|any[]|Record<any,any>} o  */
+likeAr.empty = function empty(o){
+    if (o == null) return true 
+    if (o instanceof Array) return !o.length
+    for(var k in o){
+        return false;
+    }
+    return true;
+}
+likeAr.strict.emtpy = likeAr.empty
+
 return likeAr;
 
 });

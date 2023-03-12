@@ -85,7 +85,7 @@ var object={
 <!--lang:*-->
 # API
 
-## likeAr(object)
+### `likeAr(object)`
 <!--lang:es-->
 Devuelve el objeto encadenable. Ese objeto tiene los siguientes métodos:
 
@@ -118,7 +118,7 @@ function            | returned value
 
 [!--lang:*-->
 
-## LikeAr(object).build(cb(value, key))
+### `LikeAr(object).build(cb(value, key))`
 <!--lang:es-->
 Construye un objeto nuevo con las claves cambiadas. 
 La función `cb` debe devolver el elemento como un objeto de un solo campo `{k: v}` que se usará para componer el resultado final. 
@@ -142,8 +142,8 @@ console.log(LikeAr(toJoin).build(funciton(objectWithOneKey){ return objectWithOn
 
 ```
 
-## LikeAr.toPlainObject(array [,keyName [,valueName]])
-## LikeAr.toPlainObject(arrayOfKeys, arrayOfValues)
+### `LikeAr.toPlainObject(array [,keyName [,valueName]])`
+### `LikeAr.toPlainObject(arrayOfKeys, arrayOfValues)`
 
 <!--lang:es-->
 Construye un objeto común (no encadenable) a partir de un arreglo de pares (o de un par de arreglos) de claves y valores. 
@@ -158,7 +158,6 @@ Returns a plain object from an array of pairs (or a pair of arrays) of key/value
 Default values: `0` and `1` if `keyName` is not set. `"value"` for `valueName` if `keyName` is set.
 
 [!--lang:*-->
-# Usage
 
 ```ts
 var {LikeAr} = require('like-ar');
@@ -172,7 +171,7 @@ var pairs=[{field:'lastName', value:'Perez'}, {field:'firstName', value:'Diego'}
 console.log(LikeAr.toPlainObject(pairs, 'field'));
 ```
 
-## LikeAr.createIndex(array:T[],keyName:string):{[k:string]: T}
+### `LikeAr.createIndex(array:T[],keyName:string):{[k:string]: T}`
 
 <!--lang:es-->
 Construye un objeto común que será índice de los elementos de un arreglo existente. 
@@ -182,7 +181,6 @@ Cada valor del objeto apunta a un elemento del arreglo existente.
 Returns a plain object containing the same element indexed by keyName
 
 [!--lang:*-->
-# Usage
 
 ```ts
 var {LikeAr} = require('like-ar');
@@ -195,6 +193,56 @@ idxPersons.Kahlo.age=20;
 
 console.log(persons[1].age); // 20
 ```
+
+### `LikeAr.iterator<T>(arrayOrObject:T[]|Record<K,T>):Iterator<T>`
+
+<!--lang:es-->
+Devuelve un `Iterator<T>` a partir de un `Array<T>` o un `Record<K,T>`. 
+Si el parámetro es un arreglo se devuelve el mismo arreglo, 
+si es un objeto se devuelve un iterador a los valores. 
+
+<!--lang:en--]
+Returns an Iterator<T> from an `Array<T>` or a `Record<K,T>`.
+If the parameter is an array the same array is returned. 
+Otherwise it returns an iterator to the values of the object. 
+
+[!--lang:*-->
+
+```ts
+var {iterator} = require('like-ar');
+
+function showValues(arrayOrObject: any[] | Record<any, any>){
+    for (var value of iterator(arrayOrObject)) {
+        console.log(value)
+    }
+}
+```
+
+### LikeAr.empty(arrayOrObject:T[]|Record<K,T>|null):boolean
+
+<!--lang:es-->
+Devuelve `false` si el arreglo o el objeto tiene al menos un elemento.
+Devuelve `true` si está vacío (si el arreglo es = `[]` o el objeto = `{}` ó `null`)
+
+<!--lang:en--]
+Returns `false` if the arreglo or object has at least one value. 
+Returns `true` if it is empty (i.e. if the array is `[]` or the object is  `{}` or `null`)
+
+[!--lang:*-->
+
+```ts
+var {iterator, emtpy} = require('like-ar');
+
+function showValues(arrayOrObject: any[] | Record<any, any> | null){
+    if (empty(arrayOrObject)) {
+        Console.log('EMPTY!')
+    }
+    for (var value of iterator(arrayOrObject)) {
+        console.log(value)
+    }
+}
+```
+
 
 <!--lang:es-->
 ## Licencia

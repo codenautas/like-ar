@@ -62,7 +62,7 @@ var object={
 
 # API
 
-## likeAr(object)
+### `likeAr(object)`
 The callback functions receive these parameters: `value`, `key`, the `original` object and the `position` (starting by 0).
 The functions that in the Array case returns Arrays returns a chainable object.
 
@@ -78,7 +78,7 @@ function            | returned value
 
 
 
-## LikeAr(object).build(cb(value, key))
+### `LikeAr(object).build(cb(value, key))`
 Builds a new object with new keys.
 
 The callback function must return a `{key: value}` object to compose the final result.
@@ -96,14 +96,13 @@ console.log(LikeAr(toJoin).build(funciton(objectWithOneKey){ return objectWithOn
 
 ```
 
-## LikeAr.toPlainObject(array [,keyName [,valueName]])
-## LikeAr.toPlainObject(arrayOfKeys, arrayOfValues)
+### `LikeAr.toPlainObject(array [,keyName [,valueName]])`
+### `LikeAr.toPlainObject(arrayOfKeys, arrayOfValues)`
 
 Returns a plain object from an array of pairs (or a pair of arrays) of key/values.
 
 Default values: `0` and `1` if `keyName` is not set. `"value"` for `valueName` if `keyName` is set.
 
-# Usage
 
 ```ts
 var {LikeAr} = require('like-ar');
@@ -117,11 +116,10 @@ var pairs=[{field:'lastName', value:'Perez'}, {field:'firstName', value:'Diego'}
 console.log(LikeAr.toPlainObject(pairs, 'field'));
 ```
 
-## LikeAr.createIndex(array:T[],keyName:string):{[k:string]: T}
+### `LikeAr.createIndex(array:T[],keyName:string):{[k:string]: T}`
 
 Returns a plain object containing the same element indexed by keyName
 
-# Usage
 
 ```ts
 var {LikeAr} = require('like-ar');
@@ -134,6 +132,43 @@ idxPersons.Kahlo.age=20;
 
 console.log(persons[1].age); // 20
 ```
+
+### `LikeAr.iterator<T>(arrayOrObject:T[]|Record<K,T>):Iterator<T>`
+
+Returns an Iterator<T> from an `Array<T>` or a `Record<K,T>`.
+If the parameter is an array the same array is returned.
+Otherwise it returns an iterator to the values of the object.
+
+
+```ts
+var {iterator} = require('like-ar');
+
+function showValues(arrayOrObject: any[] | Record<any, any>){
+    for (var value of iterator(arrayOrObject)) {
+        console.log(value)
+    }
+}
+```
+
+### LikeAr.empty(arrayOrObject:T[]|Record<K,T>|null):boolean
+
+Returns `false` if the arreglo or object has at least one value.
+Returns `true` if it is empty (i.e. if the array is `[]` or the object is  `{}` or `null`)
+
+
+```ts
+var {iterator, emtpy} = require('like-ar');
+
+function showValues(arrayOrObject: any[] | Record<any, any> | null){
+    if (empty(arrayOrObject)) {
+        Console.log('EMPTY!')
+    }
+    for (var value of iterator(arrayOrObject)) {
+        console.log(value)
+    }
+}
+```
+
 
 ## License
 
