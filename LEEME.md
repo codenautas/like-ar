@@ -171,7 +171,7 @@ var pairs=[{field:'lastName', value:'Perez'}, {field:'firstName', value:'Diego'}
 console.log(LikeAr.toPlainObject(pairs, 'field'));
 ```
 
-### `LikeAr.createIndex(array:T[],keyName:string):{[k:string]: T}`
+### `LikeAr.createIndex(array:T[], keyName:string): Record<string, T>`
 
 <!--lang:es-->
 Construye un objeto común que será índice de los elementos de un arreglo existente. 
@@ -194,7 +194,7 @@ idxPersons.Kahlo.age=20;
 console.log(persons[1].age); // 20
 ```
 
-### `LikeAr.iterator<T>(arrayOrObject:T[]|Record<K,T>):Iterator<T>`
+### `LikeAr.iterator(arrayOrObject: T[] | Record<K,T>): Iterator<T>`
 
 <!--lang:es-->
 Devuelve un `Iterator<T>` a partir de un `Array<T>` o un `Record<K,T>`. 
@@ -218,7 +218,7 @@ function showValues(arrayOrObject: any[] | Record<any, any>){
 }
 ```
 
-### LikeAr.empty(arrayOrObject:T[]|Record<K,T>|null):boolean
+### `LikeAr.empty(arrayOrObject: T[] | Record<K,T> | null): boolean`
 
 <!--lang:es-->
 Devuelve `false` si el arreglo o el objeto tiene al menos un elemento.
