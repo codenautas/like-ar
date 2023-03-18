@@ -97,15 +97,29 @@ describe("array",function(){
     })
 });
 
-/** @type { {style:'Optimized'|'nonOptimized', fun?:typeof likeAr}[] }*/
+/** @type { {style:'Optimized'|'nonOptimized', fun?:typeof likeAr, contamined?:boolean}[] }*/
 var optionsToTest=[
     {style:'Optimized',fun:LikeAr},
+    {style:'nonOptimized', contamined:true},
+    {style:'Optimized',fun:LikeAr, contamined:true},
     {style:'nonOptimized'},
 ]
 optionsToTest.forEach(function(style){
-  describe(style.style, function(){
+  describe(style.style + (style.contamined ? " contamined" : ""), function(){
     /** @type {typeof LikeAr} */
     var likear=style.fun||LikeAr[style.style];
+    before(()=>{
+        if(style.contamined) {
+            // @ts-ignore
+            Object.prototype.conaminedAttr='contamined';
+        }
+    })
+    after(()=>{
+        if(style.contamined) {
+            // @ts-ignore
+            delete Object.prototype.conaminedAttr;
+        }
+    })
     describe("object2Array", function(){
         /** @type {{[key in 'a'|'b'|'c']:string}} */
         var algo;

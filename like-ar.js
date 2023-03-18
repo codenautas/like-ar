@@ -111,9 +111,9 @@ ObjectWithArrayMethodsOptimized.prototype.build = function build(f, fThis){
     for(var attr in oThis){ if(oThis.hasOwnProperty(attr)){
         var result = f.call(fThis, oThis[attr], attr, oThis, i++);
         // eslint-disable-next-line guard-for-in
-        for(var attrResult in result){
+        for(var attrResult in result){ if(result.hasOwnProperty(attrResult)){
             acumulator[attrResult]=result[attrResult];
-        }
+        }}
     }}
     return acumulator;
 };
@@ -124,9 +124,9 @@ LikeArStrict.prototype.buildPlain = function buildPlain(f, fThis){
     for(var attr in oThis){ if(oThis.hasOwnProperty(attr)){
         var result = f.call(fThis, oThis[attr], attr, oThis, i++);
         // eslint-disable-next-line guard-for-in
-        for(var attrResult in result){
+        for(var attrResult in result){ if(result.hasOwnProperty(attrResult)){
             acumulator[attrResult]=result[attrResult];
-        }
+        }}
     }}
     return acumulator;
 };
@@ -308,7 +308,7 @@ likeAr.empty = function empty(o){
     if (o == null) return true 
     if (o instanceof Array) return !o.length
     for(var k in o){
-        return false;
+        if(o.hasOwnProperty(k)) return false;
     }
     return true;
 }

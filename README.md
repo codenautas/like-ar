@@ -116,7 +116,7 @@ var pairs=[{field:'lastName', value:'Perez'}, {field:'firstName', value:'Diego'}
 console.log(LikeAr.toPlainObject(pairs, 'field'));
 ```
 
-### `LikeAr.createIndex(array:T[],keyName:string):{[k:string]: T}`
+### `LikeAr.createIndex(array:T[], keyName:string): Record<string, T>`
 
 Returns a plain object containing the same element indexed by keyName
 
@@ -133,7 +133,7 @@ idxPersons.Kahlo.age=20;
 console.log(persons[1].age); // 20
 ```
 
-### `LikeAr.iterator<T>(arrayOrObject:T[]|Record<K,T>):Iterator<T>`
+### `LikeAr.iterator(arrayOrObject: T[] | Record<K,T>): Iterator<T>`
 
 Returns an Iterator<T> from an `Array<T>` or a `Record<K,T>`.
 If the parameter is an array the same array is returned.
@@ -150,7 +150,7 @@ function showValues(arrayOrObject: any[] | Record<any, any>){
 }
 ```
 
-### LikeAr.empty(arrayOrObject:T[]|Record<K,T>|null):boolean
+### `LikeAr.empty(arrayOrObject: T[] | Record<K,T> | null): boolean`
 
 Returns `false` if the arreglo or object has at least one value.
 Returns `true` if it is empty (i.e. if the array is `[]` or the object is  `{}` or `null`)

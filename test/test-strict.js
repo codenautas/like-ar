@@ -100,6 +100,14 @@ describe("strict array",function(){
 
 describe("strict object", function(){
     var likear=LikeAr;
+    before(()=>{
+        // @ts-ignore
+        Object.prototype.conaminedAttr='contamined';
+    })
+    after(()=>{
+        // @ts-ignore
+        delete Object.prototype.conaminedAttr;
+    })
     describe("object2Array", function(){
         /** @type {{[key in 'a'|'b'|'c']:string}} */
         var algo;
