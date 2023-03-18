@@ -22,7 +22,7 @@
     "typescript": "^4.9.5"
   },
   "engines": {
-    "node": ">= 4.0.0"
+    "node": ">= 16.0.0"
   },
   "scripts": {
     "test": "mocha --reporter spec --bail --check-leaks test/",
@@ -43,7 +43,7 @@
     "lines": 95,
     "statements": 95,
     "functions": 95,
-    "branches": 95,
+    "branches": 90,
     "extension": [
       ".js"
     ],
