@@ -38,6 +38,10 @@ var ObjectWithArrayMethodsOptimized = function anonymous(o){
     AdaptWithArrayMethods(this, o);
 };
 
+function itsAnOwnProperty(obj, attr){
+    return !obj.hasOwnProperty || obj.hasOwnProperty(attr)
+}
+
 function id(x){ return x; }
 
 likeAr = function object2Array(o){
@@ -70,7 +74,7 @@ ObjectWithArrayMethodsOptimized.prototype.array = function array(){
         return Object.values(oThis);
     }
     var arr = [];
-    for(var attr in oThis){ if(oThis.hasOwnProperty(attr)){
+    for(var attr in oThis){ if(itsAnOwnProperty(oThis,attr)){
         arr.push(oThis[attr]);
     }}
     return arr;
@@ -108,10 +112,10 @@ ObjectWithArrayMethodsOptimized.prototype.build = function build(f, fThis){
     var oThis=this._object;
     var acumulator = likeAr();
     var i=0;
-    for(var attr in oThis){ if(oThis.hasOwnProperty(attr)){
+    for(var attr in oThis){ if(itsAnOwnProperty(oThis,attr)){
         var result = f.call(fThis, oThis[attr], attr, oThis, i++);
         // eslint-disable-next-line guard-for-in
-        for(var attrResult in result){ if(result.hasOwnProperty(attrResult)){
+        for(var attrResult in result){ if(itsAnOwnProperty(result,attrResult)){
             acumulator[attrResult]=result[attrResult];
         }}
     }}
@@ -121,10 +125,10 @@ LikeArStrict.prototype.buildPlain = function buildPlain(f, fThis){
     var oThis=this._object;
     var acumulator = {};
     var i=0;
-    for(var attr in oThis){ if(oThis.hasOwnProperty(attr)){
+    for(var attr in oThis){ if(itsAnOwnProperty(oThis,attr)){
         var result = f.call(fThis, oThis[attr], attr, oThis, i++);
         // eslint-disable-next-line guard-for-in
-        for(var attrResult in result){ if(result.hasOwnProperty(attrResult)){
+        for(var attrResult in result){ if(itsAnOwnProperty(result,attrResult)){
             acumulator[attrResult]=result[attrResult];
         }}
     }}
@@ -137,7 +141,7 @@ LikeArStrict.prototype.build = function build(f, fThis){
 ObjectWithArrayMethodsOptimized.prototype.keyCount = function keyCount(){
     var oThis=this._object;
     var i=0;
-    for(var attr in oThis){ if(oThis.hasOwnProperty(attr)){
+    for(var attr in oThis){ if(itsAnOwnProperty(oThis,attr)){
         i++;
     }}
     return i;
@@ -174,7 +178,7 @@ function Argument3Adapt(__,___,x){ return x; }
 ObjectWithArrayMethodsOptimized.prototype.forEach = function forEach(f, fThis){
     var oThis=this._object;
     var i=0;
-    for(var attr in oThis){ if(oThis.hasOwnProperty(attr)){
+    for(var attr in oThis){ if(itsAnOwnProperty(oThis,attr)){
         f.call(fThis, oThis[attr], attr, oThis, i++);
     }}
 };
@@ -184,7 +188,7 @@ ObjectWithArrayMethodsOptimized.prototype.map = function map(f, fThis){
     var oThis=this._object;
     var acumulator = likeAr();
     var i=0;
-    for(var attr in oThis){ if(oThis.hasOwnProperty(attr)){
+    for(var attr in oThis){ if(itsAnOwnProperty(oThis,attr)){
         acumulator[attr] = f.call(fThis, oThis[attr], attr, oThis, i++);
     }}
     return acumulator;
@@ -193,7 +197,7 @@ LikeArStrict.prototype.map = function map(f, fThis){
     var oThis=this._object;
     var acumulator = {};
     var i=0;
-    for(var attr in oThis){ if(oThis.hasOwnProperty(attr)){
+    for(var attr in oThis){ if(itsAnOwnProperty(oThis,attr)){
         acumulator[attr] = f.call(fThis, oThis[attr], attr, oThis, i++);
     }}
     return likeAr.strict(acumulator);
@@ -203,7 +207,7 @@ ObjectWithArrayMethodsOptimized.prototype.filter = function filter(f, fThis){
     var oThis=this._object;
     var acumulator = likeAr();
     var i=0;
-    for(var attr in oThis){ if(oThis.hasOwnProperty(attr)){
+    for(var attr in oThis){ if(itsAnOwnProperty(oThis,attr)){
         var value = oThis[attr];
         if(f.call(fThis, value, attr, oThis, i++)){
             acumulator[attr] = value;
@@ -215,7 +219,7 @@ LikeArStrict.prototype.filter = function filter(f, fThis){
     var oThis=this._object;
     var acumulator = {};
     var i=0;
-    for(var attr in oThis){ if(oThis.hasOwnProperty(attr)){
+    for(var attr in oThis){ if(itsAnOwnProperty(oThis,attr)){
         var value = oThis[attr];
         if(f.call(fThis, value, attr, oThis, i++)){
             acumulator[attr] = value;
@@ -226,7 +230,7 @@ LikeArStrict.prototype.filter = function filter(f, fThis){
 LikeArStrict.prototype.find = function find(f, fThis){
     var oThis=this._object;
     var i=0;
-    for(var attr in oThis){ if(oThis.hasOwnProperty(attr)){
+    for(var attr in oThis){ if(itsAnOwnProperty(oThis,attr)){
         var value = oThis[attr];
         if(f.call(fThis, value, attr, oThis, i++)){
             return oThis[attr];
@@ -237,7 +241,7 @@ LikeArStrict.prototype.find = function find(f, fThis){
 LikeArStrict.prototype.findKey = function findKey(f, fThis){
     var oThis=this._object;
     var i=0;
-    for(var attr in oThis){ if(oThis.hasOwnProperty(attr)){
+    for(var attr in oThis){ if(itsAnOwnProperty(oThis,attr)){
         var value = oThis[attr];
         if(f.call(fThis, value, attr, oThis, i++)){
             return attr;
@@ -308,7 +312,7 @@ likeAr.empty = function empty(o){
     if (o == null) return true 
     if (o instanceof Array) return !o.length
     for(var k in o){
-        if(o.hasOwnProperty(k)) return false;
+        if(itsAnOwnProperty(o,k)) return false;
     }
     return true;
 }

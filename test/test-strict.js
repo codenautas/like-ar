@@ -261,6 +261,21 @@ describe("strict object", function(){
             expect(prevRes.keys()).to.eql(['a', 'c']);
             expect(prevRes.join()).to.eql('7!?,9!?');
         });
+        it("anonymous object __proto__ null", function(){
+            var obj = {"11":"a11", "12": 12, "14":false, "Z":{blah:2}, "":'x'}
+            obj.__proto__ = null;
+            var result = likear(obj).map(x=>({x})).plain();
+            discrepances.showAndThrow(result, {"11":{x:"a11"}, "12":{x:12}, "14":{x:false}, "Z":{x:{blah:2}}, "":{x:'x'}});
+            discrepances.showAndThrow(result.Z.x === obj.Z, true);
+        });
+        it("anonymous object Object.create(null)", function(){
+            var expected = {"11":{value:"a11"}, "12":{value:12}, "14":{value:false}, "Z":{value:{blah:2}}, "":{value:'x'}}
+            var obj = Object.create(null, likear(expected).map(x=>({...x, enumerable:true})).plain());
+            discrepances.showAndThrow(obj,  {"11":"a11", "12": 12, "14":false, "Z":{blah:2}, "":'x'}, {duckTyping:true})
+            var result = likear(obj).map(value=>({value})).plain();
+            discrepances.showAndThrow(result, expected);
+            discrepances.showAndThrow(result.Z.value === obj.Z, true);
+        });
         it("map array into object", function(){
             /** @type {likeAr.ObjectWithArrayFunctions<{[key in number]:{a:number}}>} */
             var _testType = beingArray([{a:11}, {a:12}, {a:14}]);
