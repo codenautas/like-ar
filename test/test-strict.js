@@ -161,7 +161,7 @@ describe("strict object", function(){
                 return [valor, indice, contenedor, posicion];
             }                
             /** @type {likeAr.ObjectWithArrayFunctions<{[key in AorBorC]:[string,AorBorC,typeof algo, number]}>} */
-            /**TODO poder cambiar a: @type {likeAr.ObjectWithArrayFunctions<{[key in AorBorC]:[string,key,typeof algo, number]}>} */
+            /**TODO poder cambiar a: @ type {likeAr.ObjectWithArrayFunctions<{[key in AorBorC]:[string,key,typeof algo, number]}>} */
             var prevRes = likear(algo).map(callback);
             expect(prevRes).to.eql({});
             var res = prevRes.plain();
@@ -263,6 +263,7 @@ describe("strict object", function(){
         });
         it("anonymous object __proto__ null", function(){
             var obj = {"11":"a11", "12": 12, "14":false, "Z":{blah:2}, "":'x'}
+            // @ts-expect-error transform to anonymous object. 
             obj.__proto__ = null;
             var result = likear(obj).map(x=>({x})).plain();
             discrepances.showAndThrow(result, {"11":{x:"a11"}, "12":{x:12}, "14":{x:false}, "Z":{x:{blah:2}}, "":{x:'x'}});

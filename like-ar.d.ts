@@ -32,7 +32,7 @@ declare namespace likeAr{
     export function strict<T>(o:T):likeAr.ObjectWithArrayFunctions<T>
     export function beingArray<T>(o:T[]):likeAr.ObjectWithArrayFunctions<{[key in number]:T}>
     export function iterator<T>(o:T[]):T[]
-    export function iterator<T extends {}>(o:T):T[keyof T][]
+    export function iterator<T>(o:Record<any,T>):T[]    
     export function empty(o:null|undefined|{}):true
     export function empty(o:any[]|Record<any,any>):boolean
     export const LikeAr:typeof strict & typeof likeAr
