@@ -10,6 +10,18 @@ var json4all=require('json4all')
 // var LikeAr = require('../like-ar.js').strict;
 const {LikeAr, beingArray, iterator, empty} = require('../like-ar.js');
 
+async function sleepAndReturn(ms, value){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            if (value instanceof Error) {
+                reject(value)
+            } else {
+                resolve(value)
+            }
+        }, ms);
+    });
+}
+
 describe("strict array",function(){
     /** @type {string[]} */ 
     var algo;
@@ -410,4 +422,36 @@ describe("strict object", function(){
             expect(res).to.eql(expected)
         })
     });
+    describe("await promises", function(){
+        it("awaits all", async function(){
+            /** @type {number[]} */
+            var log = [];
+            var obj = {
+                one: sleepAndReturn(100, 1).then(x => (log.push(x), x)),
+                two: sleepAndReturn(20 , 2).then(x => (log.push(x), x)),
+                three: 3
+            }
+            var result = await likear(obj).awaitAll();
+            expect(result).to.eql({ one: 1, two: 2, three:3 })
+            expect(log).to.eql([2,1]);
+        })
+        it("fail first", async function(){
+            try{
+                /** @type {number[]} */
+                var log = [];
+                var obj = {
+                    one: sleepAndReturn(100, 1).then(x => (log.push(x), x)),
+                    two: sleepAndReturn(40 , new Error("the fail to capture")).then(x => (log.push(x), x)),
+                    three: sleepAndReturn(10 , 3).then(x => (log.push(x), x)),
+                }
+                var result = await LikeAr(obj).awaitAll();
+                throw new Error("Unexpected not having error")
+            }catch(err){
+                if(err.message != "the fail to capture") {
+                    throw err;
+                }
+                expect(log).to.eql([3]);
+            }
+        })
+    })
 });

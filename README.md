@@ -166,6 +166,26 @@ function showValues(arrayOrObject: any[] | Record<any, any>){
 }
 ```
 
+### `LikeAr<K,T>(object:Record<K,Promise<T>>).awaitAll(): Promise<Record<K,T>>`
+
+It runs all promises in parallel. When all finished it retunrs
+an object with the same keys and the resolution of each promise.
+If some of the promises fails it will fail immediately.
+
+
+```ts
+var likear = require('like-ar').strict;
+
+var sqls = {
+    persons: 'select * from person',
+    mascots: 'select * from mascot'
+}
+
+var data = await likear(sqls).map(async sql => db.query(sql)).awaitAll();
+
+console.log(data);
+```
+
 ### `LikeAr.empty(arrayOrObject: T[] | Record<K,T> | null): boolean`
 
 Returns `false` if the arreglo or object has at least one value.

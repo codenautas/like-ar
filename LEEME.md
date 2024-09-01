@@ -241,6 +241,34 @@ function showValues(arrayOrObject: any[] | Record<any, any>){
 }
 ```
 
+### `LikeAr<K,T>(object:Record<K,Promise<T>>).awaitAll(): Promise<Record<K,T>>`
+
+<!--lang:es-->
+Corre las promesas en paralelo, cuando todas terminan devuelve un objeto
+con las mismas claves y la resolución de cada promesa.
+Si alguna de las promesas falla la función falla con la primera 
+sin esperar la finalización del resto. 
+
+<!--lang:en--]
+It runs all promises in parallel. When all finished it retunrs
+an object with the same keys and the resolution of each promise.
+If some of the promises fails it will fail immediately.
+
+[!--lang:*-->
+
+```ts
+var likear = require('like-ar').strict;
+
+var sqls = {
+    persons: 'select * from person',
+    mascots: 'select * from mascot'
+}
+
+var data = await likear(sqls).map(async sql => db.query(sql)).awaitAll();
+
+console.log(data);
+```
+
 ### `LikeAr.empty(arrayOrObject: T[] | Record<K,T> | null): boolean`
 
 <!--lang:es-->

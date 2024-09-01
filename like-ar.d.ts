@@ -18,7 +18,8 @@ declare namespace likeAr{
         array  :() => T[keyof T][]
         plain  :() => T
         join   :(separator?:string) => string
-        keyCount:()=>number        
+        keyCount:()=>number
+        awaitAll:() => Promise<{[K in keyof T]:Awaited<T[K]>}>
     }
     export function toPlainObject<T>(array:[string, T][]):{[key:string]:T}
     export function toPlainObject<T, K extends keyof T>(array:T[], keyName:K, valueName?:K):{[key:string]:T[K]}

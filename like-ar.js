@@ -323,6 +323,40 @@ likeAr.empty = function empty(o){
 }
 likeAr.strict.emtpy = likeAr.empty
 
+ObjectWithArrayMethodsOptimized.prototype.awaitAll = function awaitAll(){
+    var oThis = this._object;
+    var count = 0
+    var o = {}
+    return new Promise(function(resolve, reject){
+        for(var attr in oThis) if(itsAnOwnProperty(oThis,attr)){
+            count++
+        }
+        for(var attr in oThis) if(itsAnOwnProperty(oThis,attr)){ 
+            (function(p, attr){
+                if (!(p instanceof Promise)) p = Promise.resolve(p);
+                p.catch(reject).then(v => {count--; o[attr] = v; if (count == 0) resolve(o)});
+            })(oThis[attr], attr);
+        }
+    }) ;
+}
+
+LikeArStrict.prototype.awaitAll = function awaitAll(){
+    var oThis = this._object;
+    var count = 0
+    var o = {}
+    return new Promise(function(resolve, reject){
+        for(var attr in oThis) if(itsAnOwnProperty(oThis,attr)){
+            count++
+        }
+        for(var attr in oThis) if(itsAnOwnProperty(oThis,attr)){ 
+            (function(p, attr){
+                if (!(p instanceof Promise)) p = Promise.resolve(p);
+                p.catch(reject).then(v => {count--; o[attr] = v; if (count == 0) resolve(o)});
+            })(oThis[attr], attr);
+        }
+    }) ;
+}
+
 return likeAr;
 
 });

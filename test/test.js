@@ -9,6 +9,18 @@ var json4all=require('json4all')
 
 var LikeAr = require('../like-ar.js');
 
+async function sleepAndReturn(ms, value){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            if (value instanceof Error) {
+                reject(value)
+            } else {
+                resolve(value)
+            }
+        }, ms);
+    });
+}
+
 describe("array",function(){
     /** @type {string[]} */ 
     var algo;
@@ -327,5 +339,59 @@ optionsToTest.forEach(function(style){
             expect(result).to.eql({a:11, b:12, c:14});
         });
     });
+    describe("await promises", function(){
+        it("awaits all", async function(){
+            /** @type {number[]} */
+            var log = [];
+            var obj = {
+                one: sleepAndReturn(100, 1).then(x => (log.push(x), x)),
+                two: sleepAndReturn(20 , 2).then(x => (log.push(x), x))
+            }
+            var result = await LikeAr(obj).awaitAll();
+            expect(result).to.eql({ one: 1, two: 2 })
+            expect(log).to.eql([2,1]);
+        })
+        it("fail first", async function(){
+            try{
+                /** @type {number[]} */
+                var log = [];
+                var obj = {
+                    one: sleepAndReturn(100, 1).then(x => (log.push(x), x)),
+                    two: sleepAndReturn(40 , new Error("the fail to capture")).then(x => (log.push(x), x)),
+                    three: sleepAndReturn(10 , 3).then(x => (log.push(x), x)),
+                }
+                var result = await LikeAr(obj).awaitAll();
+                throw new Error("Unexpected not having error")
+            }catch(err){
+                if(err.message != "the fail to capture") {
+                    throw err;
+                }
+                expect(log).to.eql([3]);
+                await sleepAndReturn(100,null);
+                expect(log).to.eql([3,1]);
+            }
+        })
+        it("fail first in Promise.all", async function(){
+            // this test is here to confirm that promises still running in Promise.all and awaitAll must behave the same.
+            try{
+                /** @type {number[]} */
+                var log = [];
+                var obj = [
+                    sleepAndReturn(100, 1).then(x => (log.push(x), x)),
+                    sleepAndReturn(40 , new Error("the fail to capture")).then(x => (log.push(x), x)),
+                    sleepAndReturn(10 , 3).then(x => (log.push(x), x)),
+                ]
+                var result = await Promise.all(obj);
+                throw new Error("Unexpected not having error")
+            }catch(err){
+                if(err.message != "the fail to capture") {
+                    throw err;
+                }
+                expect(log).to.eql([3]);
+                await sleepAndReturn(100,null);
+                expect(log).to.eql([3,1]);
+            }
+        })
+    })
   });
 });
