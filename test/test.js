@@ -64,14 +64,23 @@ describe("array",function(){
         var pairs=[{column:'one', value:1}, {column:'two', value:two}];
         var obtained=LikeAr.createIndex(pairs,"column");
         expect(obtained).to.eql({one:{column:'one', value:1}, two:{column:'two', value:two}});
-        expect(obtained.two).to.eql(pairs[1]);
+        expect(obtained.two === pairs[1]).to.be.ok();
     });
     it("creates a composed index object from array", function(){
         var two={alfa:'beta'};
         var pairs=[{key1:'one', key2:2, value:1}, {key1:'two', key2:22, value:two}];
         var obtained=LikeAr.createIndex(pairs,["key1", "key2"]);
         expect(obtained).to.eql({'["one",2]':{key1:'one', key2:2, value:1}, '["two",22]':{key1:'two', key2:22, value:two}});
-        expect(obtained['["two",22]']).to.eql(pairs[1]);
+        expect(obtained['["two",22]'] === pairs[1]).to.be.ok();
+    });
+    it("creates a index object from array calculating the key with a function", function(){
+        var two={alfa:'beta'};
+        /** @type {(obj:{key1:string, key2:number, value:any}) => string} */
+        var getKey = (obj) => obj.key1 + obj.key2;
+        var pairs=[{key1:'one', key2:2, value:1}, {key1:'two', key2:22, value:two}];
+        var obtained=LikeAr.createIndex(pairs, getKey);
+        expect(obtained).to.eql({one2:{key1:'one', key2:2, value:1}, two22:{key1:'two', key2:22, value:two}});
+        expect(obtained['two22'] === pairs[1]).to.be.ok();
     });
     it("creates from array of pairs", function(){
         var two={alfa:'beta'};

@@ -132,6 +132,22 @@ idxPersons.Kahlo.age=20;
 
 console.log(persons[1].age); // 20
 ```
+### `LikeAr.createIndex(array:T[], getKey:T => string): Record<string, T>`
+
+Returns a plain object containing the same element indexed by `getKey(item)`
+
+
+```ts
+var {LikeAr} = require('like-ar');
+
+var persons=[{name:'Diego', lastName:'Rivera', age:30}, {name:'Frida', lastName:'Kahlo'}];
+
+var idxPersons=LikeAr.createIndex(persons, (p) => p.name + p.lastName);
+
+idxPersons.FridaKahlo.age=20;
+
+console.log(persons[1].age); // 20
+```
 
 ### `LikeAr.iterator(arrayOrObject: T[] | Record<K,T>): Iterator<T>`
 

@@ -193,6 +193,29 @@ idxPersons.Kahlo.age=20;
 
 console.log(persons[1].age); // 20
 ```
+### `LikeAr.createIndex(array:T[], getKey:T => string): Record<string, T>`
+
+<!--lang:es-->
+Construye un objeto común que será índice de los elementos de un arreglo existente. 
+Cada valor del objeto apunta a un elemento del arreglo existente.
+El índice es calculado por la función `getKey`
+
+<!--lang:en--]
+Returns a plain object containing the same element indexed by `getKey(item)`
+
+[!--lang:*-->
+
+```ts
+var {LikeAr} = require('like-ar');
+
+var persons=[{name:'Diego', lastName:'Rivera', age:30}, {name:'Frida', lastName:'Kahlo'}];
+
+var idxPersons=LikeAr.createIndex(persons, (p) => p.name + p.lastName);
+
+idxPersons.FridaKahlo.age=20;
+
+console.log(persons[1].age); // 20
+```
 
 ### `LikeAr.iterator(arrayOrObject: T[] | Record<K,T>): Iterator<T>`
 

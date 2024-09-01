@@ -276,26 +276,31 @@ likeAr.toPlainObject = function toPlainObject(pairsOrArrayOfKeys, keyNameOrArray
 };
 likeAr.strict.toPlainObject = likeAr.toPlainObject;
 
-/** @type {<T, K extends keyof T>(array:T[], keyName:K|K[])=>{[key:string]:T}} */
+/** @type {<T, K extends keyof T>(array:T[], keyName:K|K[]|((i:T)=>string))=>{[key:string]:T}} */
 likeAr.createIndex = function createIndex(array, keyname){
     /** @type {{[key:string]:any}} */
     var o={};
+    /** @type {(i:T)=>string}  */
+    var f
     if (keyname instanceof Array) {
-        var pairs=array;
-        pairs.forEach(function(pair, i){
+        f = (pair) => {
             var key = []
             for (var keyName of keyname) {
                 key.push(pair[keyName])
             }
-            o[JSON.stringify(key)] = pair;
-        });
+            return JSON.stringify(key);
+        }
+    } else if (keyname instanceof Function) {
+        f = keyname
     } else {
-        var pairs=array;
-        pairs.forEach(function(pair, i){
-            // @ts-expect-error pair[keyname] may be not a string, number or Symbol
-            o[pair[keyname]]=pair;
-        });
+        f = (pair) => {
+            return pair[keyname];
+        }
     }
+    var pairs=array;
+    pairs.forEach(function(pair, i){
+        o[f(pair)]=pair;
+    });
     return o;
 };
 likeAr.strict.createIndex = likeAr.createIndex;
