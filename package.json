@@ -12,14 +12,14 @@
     "like-ar.d.ts"
   ],
   "devDependencies": {
-    "@types/mocha": "^10.0.7",
-    "discrepances": "^0.2.8",
+    "@types/mocha": "^10.0.10",
+    "discrepances": "^0.2.9",
     "expect.js": "^0.3.1",
     "istanbul": "^0.4.5",
-    "json4all": "^1.2.1",
-    "mocha": "^10.7.3",
-    "nyc": "^17.0.0",
-    "typescript": "^5.5.4"
+    "json4all": "^1.4.2",
+    "mocha": "^11.7.5",
+    "nyc": "^17.1.0",
+    "typescript": "^5.9.3"
   },
   "engines": {
     "node": ">= 16.0.0"
