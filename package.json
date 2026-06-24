@@ -24,6 +24,7 @@
     "json4all": "^1.4.4",
     "mocha": "^11.7.6",
     "nyc": "^18.0.0",
+    "qa-control": "^0.6.16",
     "typescript": "^5.9.3"
   },
   "engines": {
@@ -70,6 +71,7 @@
     "coverage": 90,
     "run-in": "both",
     "stability": "extending",
-    "type": "lib"
+    "type": "lib",
+    "gha": "all"
   }
 }

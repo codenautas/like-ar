@@ -331,10 +331,10 @@ ObjectWithArrayMethodsOptimized.prototype.awaitAll = function awaitAll(){
         for(var attr in oThis) if(itsAnOwnProperty(oThis,attr)){
             count++
         }
-        for(var attr in oThis) if(itsAnOwnProperty(oThis,attr)){ 
+        for(var attr in oThis) if(itsAnOwnProperty(oThis,attr)){ //eslint-disable-line no-redeclare
             (function(p, attr){
                 if (!(p instanceof Promise)) p = Promise.resolve(p);
-                p.catch(reject).then(v => {count--; o[attr] = v; if (count == 0) resolve(o)});
+                p.catch(reject).then(v => {count--; o[attr] = v; if (count == 0) resolve(o)}); // eslint-disable-line no-loop-func
             })(oThis[attr], attr);
         }
     }) ;
@@ -348,10 +348,10 @@ LikeArStrict.prototype.awaitAll = function awaitAll(){
         for(var attr in oThis) if(itsAnOwnProperty(oThis,attr)){
             count++
         }
-        for(var attr in oThis) if(itsAnOwnProperty(oThis,attr)){ 
+        for(var attr in oThis) if(itsAnOwnProperty(oThis,attr)){ //eslint-disable-line no-redeclare
             (function(p, attr){
                 if (!(p instanceof Promise)) p = Promise.resolve(p);
-                p.catch(reject).then(v => {count--; o[attr] = v; if (count == 0) resolve(o)});
+                p.catch(reject).then(v => {count--; o[attr] = v; if (count == 0) resolve(o)}); // eslint-disable-line no-loop-func
             })(oThis[attr], attr);
         }
     }) ;
