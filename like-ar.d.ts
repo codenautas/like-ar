@@ -4,7 +4,7 @@ export = likeAr
 declare function likeAr<T>(o:T):T extends (infer U)[] ? likeAr.ObjectWithArrayFunctions<{[key in number]:U}> : likeAr.ObjectWithArrayFunctions<T>
 
 declare namespace likeAr{
-    export type Mapper<T, U> = U extends {[K in keyof T]: infer W} ? 
+    export type Mapper<T, U> = U extends {[K in keyof T]: infer W} ?
         ( callback:(value:T[keyof T], key?:keyof T, original?:{[K in keyof T]:T[K]}, pos?:number)=>U) => ObjectWithArrayFunctions<U>
     : never;
     export type ObjectWithArrayFunctions<T>={
@@ -33,9 +33,8 @@ declare namespace likeAr{
     export function strict<T>(o:T):likeAr.ObjectWithArrayFunctions<T>
     export function beingArray<T>(o:T[]):likeAr.ObjectWithArrayFunctions<{[key in number]:T}>
     export function iterator<T>(o:T[]):T[]
-    export function iterator<T>(o:Record<any,T>):T[]    
+    export function iterator<T>(o:Record<any,T>):T[]
     export function empty(o:null|undefined|{}):true
     export function empty(o:any[]|Record<any,any>):boolean
     export const LikeAr:typeof strict & typeof likeAr
 }
-

@@ -22,17 +22,17 @@ async function sleepAndReturn(ms, value){
 }
 
 describe("array",function(){
-    /** @type {string[]} */ 
+    /** @type {string[]} */
     var algo;
     beforeEach(function(){
         algo=['7', '8', '9']
     })
     it("filter with modifies", function(){
         var res = algo.filter(function(valor, indice, contenedor){
-            if(indice==1){
+            if(indice === 1){
                 contenedor[indice]='z';
             }
-            return valor!='9';
+            return valor !== '9';
         });
         discrepances.showAndThrow(res,[
             '7',
@@ -132,7 +132,7 @@ optionsToTest.forEach(function(style){
     before(()=>{
         if(style.contamined) {
             // @ts-ignore
-            Object.prototype.conaminedAttr='contamined';
+            Object.prototype.conaminedAttr='contamined'; // eslint-disable-line no-extend-native
         }
     })
     after(()=>{
@@ -170,7 +170,7 @@ optionsToTest.forEach(function(style){
             /** @type {(valor:string, indice:'a'|'b'|'c', contenedor:typeof algo, posicion:number)=>void} */
             var callback=function(valor, indice, contenedor, posicion){
                 res.push([valor, indice, contenedor, posicion]);
-                if(indice=='b'){
+                if(indice === 'b'){
                     contenedor[indice]='x';
                 }
             }
@@ -186,11 +186,11 @@ optionsToTest.forEach(function(style){
             /** @typedef {'a'|'b'|'c'} AorBorC */
             /** @type {(valor:string, indice:AorBorC, contenedor:typeof algo, posicion:number)=>[string,AorBorC,typeof algo, number]} */
             var callback=function(valor, indice, contenedor, posicion){
-                if(indice=='b'){
+                if(indice === 'b'){
                     contenedor[indice]='y';
                 }
                 return [valor, indice, contenedor, posicion];
-            }                
+            }
             /** @type {LikeAr.ObjectWithArrayFunctions<{[key in AorBorC]:[string,AorBorC,typeof algo, number]}>} */
             /**TODO poder cambiar a: @type {LikeAr.ObjectWithArrayFunctions<{[key in AorBorC]:[string,key,typeof algo, number]}>} */
             var res = likear(algo).map(callback);
@@ -215,7 +215,7 @@ optionsToTest.forEach(function(style){
             /** @type {(valor:Combo, indice:AorBorC, contenedor:typeof otro, posicion:number)=>[[Combo],AorBorC,typeof otro, number]}  */
             var callback=function(valor, indice, contenedor, posicion){
                 return [[valor], indice, contenedor, posicion];
-            }                
+            }
             /** @type {LikeAr.ObjectWithArrayFunctions<{[key in AorBorC]:[[Combo],AorBorC,typeof otro, number]}>} */
             var res = likear(otro).map(callback);
             expect(res).to.eql({
@@ -230,13 +230,13 @@ optionsToTest.forEach(function(style){
             var porPosicion=null;
             /** @type {(_valor:string, indice:'a'|'b'|'c', contenedor:typeof algo, posicion:number)=>boolean} */
             var callback=function(_valor, indice, contenedor, posicion){
-                if(indice=='b'){
+                if(indice === 'b'){
                     contenedor[indice]='z';
                 }
-                if(posicion==1){
+                if(posicion == 1){ // eslint-disable-line eqeqeq
                     porPosicion=indice;
                 }
-                return indice!='c';
+                return indice !== 'c';
             }
             /** @type {likeAr.ObjectWithArrayFunctions<{[key in 'a'|'b'|'c']:string}>} */
             var res = likear(algo).filter(callback);
@@ -269,12 +269,12 @@ optionsToTest.forEach(function(style){
             /** @type {likeAr.ObjectWithArrayFunctions<typeof algo>} */
             var res = likear(algo)
             .map(function(valor, indice, contenedor){
-                if(indice=='c'){
+                if(indice === 'c'){
                     contenedor[indice]='w';
                 }
                 return valor+'!';
             }).filter(function(valor, _indice, _contenedor){
-                return valor!='8!';
+                return valor !== '8!';
             }).map(function(valor, _indice, _contenedor){
                 return valor+'?';
             });
@@ -318,13 +318,13 @@ optionsToTest.forEach(function(style){
             /** @type {likeAr.ObjectWithArrayFunctions<{[key:string]:string}>} */
             var result = LikeAr(algo).filter(
                 /** @type {(value:string|number)=>boolean} */
-                function(value){ 
-                    return value != 7 
+                function(value){
+                    return value != 7 // eslint-disable-line eqeqeq
                 }
             ).build(
                 /** @type {(value:string|number, key:string)=>{[key:string]:string}} */
-                function(value, key){ 
-                    return {['_'+key]:'"'+value+'"'}; 
+                function(value, key){
+                    return {['_'+key]:'"'+value+'"'};
                 }
             );
             expect(result).to.eql({_b:'"8"', _c:'"9"'});
@@ -363,7 +363,7 @@ optionsToTest.forEach(function(style){
                 var result = await LikeAr(obj).awaitAll();
                 throw new Error("Unexpected not having error")
             }catch(err){
-                if(err.message != "the fail to capture") {
+                if(err.message !== "the fail to capture") {
                     throw err;
                 }
                 expect(log).to.eql([3]);
@@ -384,7 +384,7 @@ optionsToTest.forEach(function(style){
                 var result = await Promise.all(obj);
                 throw new Error("Unexpected not having error")
             }catch(err){
-                if(err.message != "the fail to capture") {
+                if(err.message !== "the fail to capture") {
                     throw err;
                 }
                 expect(log).to.eql([3]);

@@ -17,7 +17,7 @@
         root[root.globalModuleName] = factory();
     }
     root.globalModuleName = null;
-})(/*jshint -W040 */this, 'likeAr', function() {
+})(/*jshint -W040 */this, 'likeAr', function() { // eslint-disable-line max-statements
 /*jshint +W040 */
 
 /*jshint -W004 */
@@ -88,13 +88,13 @@ ObjectWithArrayMethodsOptimized.prototype.join = function join(separator){
 LikeArStrict.prototype.join=ObjectWithArrayMethodsOptimized.prototype.join;
 
 /*
-function ArrayAndKeys2Object(result, keys){ 
+function ArrayAndKeys2Object(result, keys){
     var adapted = {};
     keys.forEach(function(arrayKey, arrayIndex){
         adapted[arrayKey]=result[arrayIndex];
     });
     return adapted;
-} 
+}
 */
 
 ObjectWithArrayMethodsOptimized.prototype.plain = function plain(){
@@ -114,7 +114,6 @@ ObjectWithArrayMethodsOptimized.prototype.build = function build(f, fThis){
     var i=0;
     for(var attr in oThis){ if(itsAnOwnProperty(oThis,attr)){
         var result = f.call(fThis, oThis[attr], attr, oThis, i++);
-        // eslint-disable-next-line guard-for-in
         for(var attrResult in result){ if(itsAnOwnProperty(result,attrResult)){
             acumulator[attrResult]=result[attrResult];
         }}
@@ -127,7 +126,6 @@ LikeArStrict.prototype.buildPlain = function buildPlain(f, fThis){
     var i=0;
     for(var attr in oThis){ if(itsAnOwnProperty(oThis,attr)){
         var result = f.call(fThis, oThis[attr], attr, oThis, i++);
-        // eslint-disable-next-line guard-for-in
         for(var attrResult in result){ if(itsAnOwnProperty(result,attrResult)){
             acumulator[attrResult]=result[attrResult];
         }}
@@ -253,7 +251,7 @@ LikeArStrict.prototype.findKey = function findKey(f, fThis){
 likeAr.toPlainObject = function toPlainObject(pairsOrArrayOfKeys, keyNameOrArrayOfValues, valueName){
     var o={};
     if(keyNameOrArrayOfValues && keyNameOrArrayOfValues instanceof Array){
-        if(keyNameOrArrayOfValues.length!=pairsOrArrayOfKeys.length){
+        if(keyNameOrArrayOfValues.length != pairsOrArrayOfKeys.length){ // eslint-disable-line eqeqeq
             throw new Error('ERROR like-ar.toPlainObject arrays of different length');
         }
         keyNameOrArrayOfValues.forEach(function(value, i){
@@ -314,7 +312,7 @@ likeAr.strict.iterator = likeAr.iterator;
 
 /** @param {null|undefined|any[]|Record<any,any>} o  */
 likeAr.empty = function empty(o){
-    if (o == null) return true 
+    if (o == null) return true
     if (o instanceof Array) return !o.length
     for(var k in o){
         if(itsAnOwnProperty(o,k)) return false;
@@ -334,7 +332,7 @@ ObjectWithArrayMethodsOptimized.prototype.awaitAll = function awaitAll(){
         for(var attr in oThis) if(itsAnOwnProperty(oThis,attr)){ //eslint-disable-line no-redeclare
             (function(p, attr){
                 if (!(p instanceof Promise)) p = Promise.resolve(p);
-                p.catch(reject).then(v => {count--; o[attr] = v; if (count == 0) resolve(o)}); // eslint-disable-line no-loop-func
+                p.catch(reject).then(v => {count--; o[attr] = v; if (count == 0) resolve(o)}); // eslint-disable-line no-loop-func, eqeqeq
             })(oThis[attr], attr);
         }
     }) ;
@@ -351,7 +349,7 @@ LikeArStrict.prototype.awaitAll = function awaitAll(){
         for(var attr in oThis) if(itsAnOwnProperty(oThis,attr)){ //eslint-disable-line no-redeclare
             (function(p, attr){
                 if (!(p instanceof Promise)) p = Promise.resolve(p);
-                p.catch(reject).then(v => {count--; o[attr] = v; if (count == 0) resolve(o)}); // eslint-disable-line no-loop-func
+                p.catch(reject).then(v => {count--; o[attr] = v; if (count == 0) resolve(o)}); // eslint-disable-line no-loop-func, eqeqeq
             })(oThis[attr], attr);
         }
     }) ;

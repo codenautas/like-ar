@@ -4,11 +4,11 @@ Using objects like arrays with map, filter, forEach and others coming soon.
 
 [![npm-version](https://img.shields.io/npm/v/like-ar.svg)](https://npmjs.org/package/like-ar)
 [![downloads](https://img.shields.io/npm/dm/like-ar.svg)](https://npmjs.org/package/like-ar)
-[![build](https://github.com/codenautas/like-ar/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/codenautas/like-ar/actions/workflows/build-and-test.yml)
+[![linux](https://github.com/codenautas/like-ar/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/codenautas/like-ar/actions/workflows/build-and-test.yml)
+[![windows](https://ci.appveyor.com/api/projects/status/github/codenautas/like-ar?svg=true)](https://ci.appveyor.com/project/codenautas/like-ar)
 [![coverage](https://img.shields.io/coveralls/codenautas/like-ar/master.svg)](https://coveralls.io/r/codenautas/like-ar)
 [![security](https://socket.dev/api/badge/npm/package/like-ar)](https://socket.dev/npm/package/like-ar)
 [![qa-control](https://github.com/codenautas/like-ar/actions/workflows/qa-control.yml/badge.svg)](https://github.com/codenautas/like-ar/actions/workflows/qa-control.yml)
-/codenautas/like-ar)
 
 
 language: ![English](https://raw.githubusercontent.com/codenautas/multilang/master/img/lang-en.png)
@@ -209,4 +209,3 @@ function showValues(arrayOrObject: any[] | Record<any, any> | null){
 ## License
 
 [MIT](LICENSE)
-

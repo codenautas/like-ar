@@ -10,11 +10,11 @@ Using objects like arrays with map, filter, forEach and others coming soon.
 <!-- cucardas -->
 [![npm-version](https://img.shields.io/npm/v/like-ar.svg)](https://npmjs.org/package/like-ar)
 [![downloads](https://img.shields.io/npm/dm/like-ar.svg)](https://npmjs.org/package/like-ar)
-[![build](https://github.com/codenautas/like-ar/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/codenautas/like-ar/actions/workflows/build-and-test.yml)
+[![linux](https://github.com/codenautas/like-ar/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/codenautas/like-ar/actions/workflows/build-and-test.yml)
+[![windows](https://ci.appveyor.com/api/projects/status/github/codenautas/like-ar?svg=true)](https://ci.appveyor.com/project/codenautas/like-ar)
 [![coverage](https://img.shields.io/coveralls/codenautas/like-ar/master.svg)](https://coveralls.io/r/codenautas/like-ar)
 [![security](https://socket.dev/api/badge/npm/package/like-ar)](https://socket.dev/npm/package/like-ar)
 [![qa-control](https://github.com/codenautas/like-ar/actions/workflows/qa-control.yml/badge.svg)](https://github.com/codenautas/like-ar/actions/workflows/qa-control.yml)
-/codenautas/like-ar)
 
 <!--multilang buttons-->
 
@@ -35,18 +35,18 @@ $ npm install like-ar
 # Uso
 
 La función `LikeAr` envuelve un objeto de modo que puedan usarse un
-conjunto conocido de funciones diseñadas para correr sobre arreglos: 
-`forEach`, `map`, `filter` y `join`. Similarmente a lo que ocurre con arreglos 
+conjunto conocido de funciones diseñadas para correr sobre arreglos:
+`forEach`, `map`, `filter` y `join`. Similarmente a lo que ocurre con arreglos
 estas funciones reciben una función que se ejecuta para cada elemento del objeto,
 esa función recibe el valor, la clave y el objeto original.
 
 <!--lang:en--]
 # Usage
 
-The function `LikeAr` wraps an object. The wraped object can be used like an array 
-with some array functions: `forEach`, `map`, `filter` y `join`. 
+The function `LikeAr` wraps an object. The wraped object can be used like an array
+with some array functions: `forEach`, `map`, `filter` y `join`.
 
-These functions receive a callback in the same way that the array version does. 
+These functions receive a callback in the same way that the array version does.
 
 [!--lang:*-->
 ```js
@@ -72,7 +72,7 @@ console.log(
 
 var objectUpperCase=LikeAr(object).map(v=>v.toUpperCase());
 
-/* objectUpperCase = 
+/* objectUpperCase =
 var object={
     lastName:'PEREZ',
     firstName:'DIEGO',
@@ -99,7 +99,7 @@ función             | valor devuelto
 `keys()`            | arreglo conteniendo solo las claves
 `plain()`           | devuelve un objeto plano (donde ya no se puede llamar a `forEach`, `map`, `filter`, etc)
 
-Todas las funciones callback (`cb`) reciben como parámetro: valor, clave, objeto original y posición (numérica comenzando con 0). 
+Todas las funciones callback (`cb`) reciben como parámetro: valor, clave, objeto original y posición (numérica comenzando con 0).
 
 <!--lang:en--]
 The callback functions receive these parameters: `value`, `key`, the `original` object and the `position` (starting by 0).
@@ -120,13 +120,13 @@ function            | returned value
 
 ### `LikeAr(object).build(cb(value, key))`
 <!--lang:es-->
-Construye un objeto nuevo con las claves cambiadas. 
-La función `cb` debe devolver el elemento como un objeto de un solo campo `{k: v}` que se usará para componer el resultado final. 
+Construye un objeto nuevo con las claves cambiadas.
+La función `cb` debe devolver el elemento como un objeto de un solo campo `{k: v}` que se usará para componer el resultado final.
 
 <!--lang:en--]
-Builds a new object with new keys. 
+Builds a new object with new keys.
 
-The callback function must return a `{key: value}` object to compose the final result. 
+The callback function must return a `{key: value}` object to compose the final result.
 [!--lang:*-->
 
 ```ts
@@ -146,14 +146,14 @@ console.log(LikeAr(toJoin).build(funciton(objectWithOneKey){ return objectWithOn
 ### `LikeAr.toPlainObject(arrayOfKeys, arrayOfValues)`
 
 <!--lang:es-->
-Construye un objeto común (no encadenable) a partir de un arreglo de pares (o de un par de arreglos) de claves y valores. 
+Construye un objeto común (no encadenable) a partir de un arreglo de pares (o de un par de arreglos) de claves y valores.
 
-Parámetros predeterminados: si no se especifica `keyName` se usan 0 y 1 y se supone que los pares vienen en un arreglo. 
+Parámetros predeterminados: si no se especifica `keyName` se usan 0 y 1 y se supone que los pares vienen en un arreglo.
 Si se especifica `keyName` el valor predeterminado de `valueName` es `"value"`.
 
 
 <!--lang:en--]
-Returns a plain object from an array of pairs (or a pair of arrays) of key/values. 
+Returns a plain object from an array of pairs (or a pair of arrays) of key/values.
 
 Default values: `0` and `1` if `keyName` is not set. `"value"` for `valueName` if `keyName` is set.
 
@@ -174,7 +174,7 @@ console.log(LikeAr.toPlainObject(pairs, 'field'));
 ### `LikeAr.createIndex(array:T[], keyName:string): Record<string, T>`
 
 <!--lang:es-->
-Construye un objeto común que será índice de los elementos de un arreglo existente. 
+Construye un objeto común que será índice de los elementos de un arreglo existente.
 Cada valor del objeto apunta a un elemento del arreglo existente.
 
 <!--lang:en--]
@@ -196,7 +196,7 @@ console.log(persons[1].age); // 20
 ### `LikeAr.createIndex(array:T[], getKey:T => string): Record<string, T>`
 
 <!--lang:es-->
-Construye un objeto común que será índice de los elementos de un arreglo existente. 
+Construye un objeto común que será índice de los elementos de un arreglo existente.
 Cada valor del objeto apunta a un elemento del arreglo existente.
 El índice es calculado por la función `getKey`
 
@@ -220,14 +220,14 @@ console.log(persons[1].age); // 20
 ### `LikeAr.iterator(arrayOrObject: T[] | Record<K,T>): Iterator<T>`
 
 <!--lang:es-->
-Devuelve un `Iterator<T>` a partir de un `Array<T>` o un `Record<K,T>`. 
-Si el parámetro es un arreglo se devuelve el mismo arreglo, 
-si es un objeto se devuelve un iterador a los valores. 
+Devuelve un `Iterator<T>` a partir de un `Array<T>` o un `Record<K,T>`.
+Si el parámetro es un arreglo se devuelve el mismo arreglo,
+si es un objeto se devuelve un iterador a los valores.
 
 <!--lang:en--]
 Returns an Iterator<T> from an `Array<T>` or a `Record<K,T>`.
-If the parameter is an array the same array is returned. 
-Otherwise it returns an iterator to the values of the object. 
+If the parameter is an array the same array is returned.
+Otherwise it returns an iterator to the values of the object.
 
 [!--lang:*-->
 
@@ -246,8 +246,8 @@ function showValues(arrayOrObject: any[] | Record<any, any>){
 <!--lang:es-->
 Corre las promesas en paralelo, cuando todas terminan devuelve un objeto
 con las mismas claves y la resolución de cada promesa.
-Si alguna de las promesas falla la función falla con la primera 
-sin esperar la finalización del resto. 
+Si alguna de las promesas falla la función falla con la primera
+sin esperar la finalización del resto.
 
 <!--lang:en--]
 It runs all promises in parallel. When all finished it retunrs
@@ -276,7 +276,7 @@ Devuelve `false` si el arreglo o el objeto tiene al menos un elemento.
 Devuelve `true` si está vacío (si el arreglo es = `[]` o el objeto = `{}` ó `null`)
 
 <!--lang:en--]
-Returns `false` if the arreglo or object has at least one value. 
+Returns `false` if the arreglo or object has at least one value.
 Returns `true` if it is empty (i.e. if the array is `[]` or the object is  `{}` or `null`)
 
 [!--lang:*-->
@@ -300,6 +300,5 @@ function showValues(arrayOrObject: any[] | Record<any, any> | null){
 <!--lang:en--]
 ## License
 [!--lang:*-->
-  
-[MIT](LICENSE)
 
+[MIT](LICENSE)

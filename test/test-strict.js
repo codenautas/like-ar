@@ -23,17 +23,17 @@ async function sleepAndReturn(ms, value){
 }
 
 describe("strict array",function(){
-    /** @type {string[]} */ 
+    /** @type {string[]} */
     var algo;
     beforeEach(function(){
         algo=['7', '8', '9']
     })
     it("filter with modifies", function(){
         var res = algo.filter(function(valor, indice, contenedor){
-            if(indice==1){
+            if(indice === 1){
                 contenedor[indice]='z';
             }
-            return valor!='9';
+            return valor !== '9';
         });
         discrepances.showAndThrow(res,[
             '7',
@@ -114,13 +114,13 @@ describe("strict object", function(){
     var likear=LikeAr;
     before(()=>{
         // @ts-ignore
-        Object.prototype.conaminedAttr='contamined';
+        Object.prototype.conaminedAttr='contamined'; // eslint-disable-line no-extend-native
     })
     after(()=>{
         // @ts-ignore
         delete Object.prototype.conaminedAttr;
     })
-    describe("object2Array", function(){
+    describe("object2Array", function(){ // eslint-disable-line max-statements
         /** @type {{[key in 'a'|'b'|'c']:string}} */
         var algo;
         beforeEach(function(){
@@ -148,9 +148,9 @@ describe("strict object", function(){
             var res=[];
             /** @type {(valor:string, indice:'a'|'b'|'c', contenedor:typeof algo, posicion:number)=>void} */
             var callback=function(valor, indice, contenedor, posicion){
-                expect(contenedor==algo).to.be.ok("contenedor==algo");
+                expect(contenedor === algo).to.be.ok("contenedor==algo");
                 res.push([valor, indice, contenedor, posicion]);
-                if(indice=='b'){
+                if(indice === 'b'){
                     contenedor[indice]='x';
                 }
             }
@@ -166,12 +166,12 @@ describe("strict object", function(){
             /** @typedef {'a'|'b'|'c'} AorBorC */
             /** @type {(valor:string, indice:AorBorC, contenedor:typeof algo, posicion:number)=>[string,AorBorC,typeof algo, number]} */
             var callback=function(valor, indice, contenedor, posicion){
-                expect(contenedor==algo).to.be.ok("contenedor==algo");
-                if(indice=='b'){
+                expect(contenedor === algo).to.be.ok("contenedor==algo");
+                if(indice === 'b'){
                     contenedor[indice]='y';
                 }
                 return [valor, indice, contenedor, posicion];
-            }                
+            }
             /** @type {likeAr.ObjectWithArrayFunctions<{[key in AorBorC]:[string,AorBorC,typeof algo, number]}>} */
             /**TODO poder cambiar a: @ type {likeAr.ObjectWithArrayFunctions<{[key in AorBorC]:[string,key,typeof algo, number]}>} */
             var prevRes = likear(algo).map(callback);
@@ -198,7 +198,7 @@ describe("strict object", function(){
             /** @type {(valor:Combo, indice:AorBorC, contenedor:typeof otro, posicion:number)=>[[Combo],AorBorC,typeof otro, number]}  */
             var callback=function(valor, indice, contenedor, posicion){
                 return [[valor], indice, contenedor, posicion];
-            }                
+            }
             /** @type {likeAr.ObjectWithArrayFunctions<{[key in AorBorC]:[[Combo],AorBorC,typeof otro, number]}>} */
             var prevRes = likear(otro).map(callback);
             expect(prevRes).to.eql({});
@@ -215,13 +215,13 @@ describe("strict object", function(){
             var porPosicion=null;
             /** @type {(_valor:string, indice:'a'|'b'|'c', contenedor:typeof algo, posicion:number)=>boolean} */
             var callback=function(_valor, indice, contenedor, posicion){
-                if(indice=='b'){
+                if(indice === 'b'){
                     contenedor[indice]='z';
                 }
-                if(posicion==1){
+                if(posicion === 1){
                     porPosicion=indice;
                 }
-                return indice!='c';
+                return indice !== 'c';
             }
             /** @type {likeAr.ObjectWithArrayFunctions<{[key in 'a'|'b'|'c']:string}>} */
             var res = likear(algo).filter(callback);
@@ -251,12 +251,12 @@ describe("strict object", function(){
             /** @type {likeAr.ObjectWithArrayFunctions<typeof algo>} */
             var prevRes = likear(algo)
             .map(function(valor, indice, contenedor){
-                if(indice=='c'){
+                if(indice === 'c'){
                     contenedor[indice]='w';
                 }
                 return valor+'!';
             }).filter(function(valor, _indice, _contenedor){
-                return valor!='8!';
+                return valor !== '8!';
             }).map(function(valor, _indice, _contenedor){
                 return valor+'?';
             });
@@ -275,8 +275,8 @@ describe("strict object", function(){
         });
         it("anonymous object __proto__ null", function(){
             var obj = {"11":"a11", "12": 12, "14":false, "Z":{blah:2}, "":'x'}
-            // @ts-expect-error transform to anonymous object. 
-            obj.__proto__ = null;
+            // @ts-expect-error transform to anonymous object.
+            obj.__proto__ = null; // eslint-disable-line no-proto
             var result = likear(obj).map(x=>({x})).plain();
             discrepances.showAndThrow(result, {"11":{x:"a11"}, "12":{x:12}, "14":{x:false}, "Z":{x:{blah:2}}, "":{x:'x'}});
             discrepances.showAndThrow(result.Z.x === obj.Z, true);
@@ -357,13 +357,13 @@ describe("strict object", function(){
             /** @type {{[key:string]:string}} */
             var result = LikeAr(algo).filter(
                 /** @type {(value:string|number)=>boolean} */
-                function(value){ 
-                    return value != 7 
+                function(value){
+                    return value != 7 // eslint-disable-line eqeqeq
                 }
             ).build(
                 /** @type {(value:string|number, key:string)=>{[key:string]:string}} */
-                function(value, key){ 
-                    return {['_'+key]:'"'+value+'"'}; 
+                function(value, key){
+                    return {['_'+key]:'"'+value+'"'};
                 }
             ).plain();
             expect(result).to.eql({_b:'"8"', _c:'"9"'});
@@ -386,17 +386,17 @@ describe("strict object", function(){
                 x3:{get a(){ x3++; return 'no'}},
             };
             var res = likear(algo).find(function(value, key, object){
-                expect(object==algo).to.be.ok();
-                return value.a=='yes';
+                expect(object === algo).to.be.ok();
+                return value.a === 'yes';
             })
-            expect(res==algo.x2).to.be.ok();
+            expect(res === algo.x2).to.be.ok();
             expect(x1).to.eql(2);
             expect(x3).to.eql(11);
             var idx = likear(algo).findKey(function(value, key, object){
-                expect(object==algo).to.be.ok();
-                return value.a=='yes';
+                expect(object === algo).to.be.ok();
+                return value.a === 'yes';
             })
-            expect(idx=='x2').to.be.ok();
+            expect(idx === 'x2').to.be.ok();
         })
         it("find and not found", function(){
             var algo = {
@@ -405,13 +405,13 @@ describe("strict object", function(){
                 x3:{a:'no'}
             };
             var res = likear(algo).find(function(value, key, object){
-                expect(object==algo).to.be.ok();
-                return value.a=='may be'
+                expect(object === algo).to.be.ok();
+                return value.a === 'may be'
             })
             expect(res==null).to.be.ok();
             var key = likear(algo).findKey(function(value, key, object){
-                expect(object==algo).to.be.ok();
-                return value.a=='may be'
+                expect(object === algo).to.be.ok();
+                return value.a === 'may be'
             })
             expect(key===undefined).to.be.ok();
         })
@@ -447,7 +447,7 @@ describe("strict object", function(){
                 var result = await LikeAr(obj).awaitAll();
                 throw new Error("Unexpected not having error")
             }catch(err){
-                if(err.message != "the fail to capture") {
+                if(err.message !== "the fail to capture") {
                     throw err;
                 }
                 expect(log).to.eql([3]);
