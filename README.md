@@ -7,7 +7,6 @@ Using objects like arrays with map, filter, forEach and others coming soon.
 [![linux](https://github.com/codenautas/like-ar/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/codenautas/like-ar/actions/workflows/build-and-test.yml)
 [![windows](https://ci.appveyor.com/api/projects/status/github/codenautas/like-ar?svg=true)](https://ci.appveyor.com/project/codenautas/like-ar)
 [![coverage](https://img.shields.io/coveralls/codenautas/like-ar/master.svg)](https://coveralls.io/r/codenautas/like-ar)
-[![security](https://socket.dev/api/badge/npm/package/like-ar)](https://socket.dev/npm/package/like-ar)
 [![qa-control](https://github.com/codenautas/like-ar/actions/workflows/qa-control.yml/badge.svg)](https://github.com/codenautas/like-ar/actions/workflows/qa-control.yml)
 
 
