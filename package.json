@@ -14,7 +14,10 @@
   "overrides": {
     "diff": ">=8.0.2",
     "serialize-javascript": ">=7.0.0",
-    "uuid": ">=14.0.0"
+    "uuid": ">=14.0.0",
+    "@istanbuljs/load-nyc-config": {
+      "js-yaml": "^4.1.0"
+    }
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",
@@ -23,8 +26,11 @@
     "json4all": "^1.4.6",
     "mocha": "^12.0.3",
     "nyc": "^18.0.0",
-    "qa-control": "^0.12.2",
-    "typescript": "^5.9.3"
+    "qa-control": "^0.14.1",
+    "require-bro": "^0.4.1",
+    "server4test": "^2.0.5",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.71.2"
   },
   "engines": {
     "node": ">= 16.0.0"
@@ -32,13 +38,10 @@
   "scripts": {
     "test": "mocha --reporter spec --bail --check-leaks test/",
     "test-nc": "mocha --reporter spec --bail --check-leaks --no-colors test/",
-    "test-ci": "nyc mocha --reporter spec --bail --check-leaks --no-colors test/",
-    "test-cli": "node server/karma-server.js --karma karma.conf.js --single-run",
-    "test-cli-h": "node server/karma-server.js --karma karma.conf.js",
-    "test-cli-ff": "npm run test-cli -- --browsers Firefox",
-    "test-cli-saf": "npm run test-cli -- --browsers Safari",
-    "start": "node example/server.js",
-    "all": "npm test && npm run test-cov && npm run report && qa-control . -v"
+    "test-ci": "nyc --silent mocha --reporter spec --bail --check-leaks --no-colors test/ && npm run test-navigator && nyc report",
+    "build-test": "nyc instrument --delete like-ar.js local-instrumented",
+    "test-navigator": "npm run build-test && server4test --run-browser chrome,firefox",
+    "test-navigator-inf": "npm run build-test && server4test"
   },
   "nyc": {
     "lines": 95,
@@ -69,6 +72,9 @@
     "run-in": "both",
     "type": "lib",
     "test-appveyor": true,
-    "gha": "all"
+    "gha": "all",
+    "silenced": [
+      "eslint_warnings_in_file_1"
+    ]
   }
 }

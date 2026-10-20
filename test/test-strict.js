@@ -1,5 +1,9 @@
 "use strict";
 
+// own scope: in the browser this file shares the global scope with test.js, which has another LikeAr
+/* eslint-disable global-require -- the requires are inside that own scope */
+(function(){
+
 // @ts-ignore
 var expect=require('expect.js')
 var discrepances = require('discrepances');
@@ -455,3 +459,5 @@ describe("strict object", function(){
         })
     })
 });
+
+})();
